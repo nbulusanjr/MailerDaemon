@@ -1,0 +1,116 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="mailerdaemonModelStoreContainer" CdmEntityContainer="mailerdaemonEntities2">
+    <EntitySetMapping Name="applications">
+      <EntityTypeMapping TypeName="mailerdaemonModel.application">
+        <MappingFragment StoreEntitySet="applications">
+          <ScalarProperty Name="DateLastUpdated" ColumnName="DateLastUpdated" />
+          <ScalarProperty Name="DateCreated" ColumnName="DateCreated" />
+          <ScalarProperty Name="Description" ColumnName="Description" />
+          <ScalarProperty Name="id" ColumnName="id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="appmailagentassignments">
+      <EntityTypeMapping TypeName="mailerdaemonModel.appmailagentassignment">
+        <MappingFragment StoreEntitySet="appmailagentassignment">
+          <ScalarProperty Name="DateLastUpdated" ColumnName="DateLastUpdated" />
+          <ScalarProperty Name="DateCreated" ColumnName="DateCreated" />
+          <ScalarProperty Name="AppMailAgentID" ColumnName="AppMailAgentID" />
+          <ScalarProperty Name="ApplicationID" ColumnName="ApplicationID" />
+          <ScalarProperty Name="id" ColumnName="id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="appmailagents">
+      <EntityTypeMapping TypeName="mailerdaemonModel.appmailagent">
+        <MappingFragment StoreEntitySet="appmailagents">
+          <ScalarProperty Name="isActive" ColumnName="isActive" />
+          <ScalarProperty Name="DateLastUpdated" ColumnName="DateLastUpdated" />
+          <ScalarProperty Name="DateCreated" ColumnName="DateCreated" />
+          <ScalarProperty Name="mailingaddress" ColumnName="mailingaddress" />
+          <ScalarProperty Name="port" ColumnName="port" />
+          <ScalarProperty Name="domain" ColumnName="domain" />
+          <ScalarProperty Name="password" ColumnName="password" />
+          <ScalarProperty Name="username" ColumnName="username" />
+          <ScalarProperty Name="id" ColumnName="id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="appmailattachments">
+      <EntityTypeMapping TypeName="mailerdaemonModel.appmailattachment">
+        <MappingFragment StoreEntitySet="appmailattachments">
+          <ScalarProperty Name="DateLastUpdated" ColumnName="DateLastUpdated" />
+          <ScalarProperty Name="DateCreated" ColumnName="DateCreated" />
+          <ScalarProperty Name="Data" ColumnName="Data" />
+          <ScalarProperty Name="Size" ColumnName="Size" />
+          <ScalarProperty Name="Type" ColumnName="Type" />
+          <ScalarProperty Name="Filename" ColumnName="Filename" />
+          <ScalarProperty Name="AppMailID" ColumnName="AppMailID" />
+          <ScalarProperty Name="id" ColumnName="id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="appmailbccs">
+      <EntityTypeMapping TypeName="mailerdaemonModel.appmailbcc">
+        <MappingFragment StoreEntitySet="appmailbccs">
+          <ScalarProperty Name="DateLastUpdated" ColumnName="DateLastUpdated" />
+          <ScalarProperty Name="DateCreated" ColumnName="DateCreated" />
+          <ScalarProperty Name="To" ColumnName="To" />
+          <ScalarProperty Name="AppMailID" ColumnName="AppMailID" />
+          <ScalarProperty Name="id" ColumnName="id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="appmailccs">
+      <EntityTypeMapping TypeName="mailerdaemonModel.appmailcc">
+        <MappingFragment StoreEntitySet="appmailccs">
+          <ScalarProperty Name="DateLastUpdated" ColumnName="DateLastUpdated" />
+          <ScalarProperty Name="DateCreated" ColumnName="DateCreated" />
+          <ScalarProperty Name="To" ColumnName="To" />
+          <ScalarProperty Name="AppMailID" ColumnName="AppMailID" />
+          <ScalarProperty Name="id" ColumnName="id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="appmailjobs">
+      <EntityTypeMapping TypeName="mailerdaemonModel.appmailjob">
+        <MappingFragment StoreEntitySet="appmailjob">
+          <ScalarProperty Name="Status" ColumnName="Status" />
+          <ScalarProperty Name="DateLastUpdated" ColumnName="DateLastUpdated" />
+          <ScalarProperty Name="Duration" ColumnName="Duration" />
+          <ScalarProperty Name="DateCreated" ColumnName="DateCreated" />
+          <ScalarProperty Name="ApplicationID" ColumnName="ApplicationID" />
+          <ScalarProperty Name="id" ColumnName="id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="appmailrecipients">
+      <EntityTypeMapping TypeName="mailerdaemonModel.appmailrecipient">
+        <MappingFragment StoreEntitySet="appmailrecipients">
+          <ScalarProperty Name="DateLastUpdated" ColumnName="DateLastUpdated" />
+          <ScalarProperty Name="DateCreated" ColumnName="DateCreated" />
+          <ScalarProperty Name="To" ColumnName="To" />
+          <ScalarProperty Name="AppMailID" ColumnName="AppMailID" />
+          <ScalarProperty Name="id" ColumnName="id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="appmails">
+      <EntityTypeMapping TypeName="mailerdaemonModel.appmail">
+        <MappingFragment StoreEntitySet="appmails">
+          <ScalarProperty Name="UID" ColumnName="UID" />
+          <ScalarProperty Name="DateLastUpdated" ColumnName="DateLastUpdated" />
+          <ScalarProperty Name="DateCreated" ColumnName="DateCreated" />
+          <ScalarProperty Name="isSent" ColumnName="isSent" />
+          <ScalarProperty Name="Retries" ColumnName="Retries" />
+          <ScalarProperty Name="Content" ColumnName="Content" />
+          <ScalarProperty Name="Subject" ColumnName="Subject" />
+          <ScalarProperty Name="From" ColumnName="From" />
+          <ScalarProperty Name="ApplicationID" ColumnName="ApplicationID" />
+          <ScalarProperty Name="id" ColumnName="id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping>

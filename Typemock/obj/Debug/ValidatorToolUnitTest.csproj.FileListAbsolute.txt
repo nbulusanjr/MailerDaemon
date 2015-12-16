@@ -1,0 +1,12 @@
+C:\Users\nico.bulusan\Documents\Visual Studio 2013\Projects\MailerDaemon2\Typemock\bin\Debug\ValidatorToolUnitTest.dll
+C:\Users\nico.bulusan\Documents\Visual Studio 2013\Projects\MailerDaemon2\Typemock\bin\Debug\ValidatorToolUnitTest.pdb
+C:\Users\nico.bulusan\Documents\Visual Studio 2013\Projects\MailerDaemon2\Typemock\bin\Debug\nunit.framework.dll
+C:\Users\nico.bulusan\Documents\Visual Studio 2013\Projects\MailerDaemon2\Typemock\bin\Debug\Typemock.ArrangeActAssert.dll
+C:\Users\nico.bulusan\Documents\Visual Studio 2013\Projects\MailerDaemon2\Typemock\bin\Debug\TypeMock.dll
+C:\Users\nico.bulusan\Documents\Visual Studio 2013\Projects\MailerDaemon2\Typemock\bin\Debug\ValidatorTool.dll
+C:\Users\nico.bulusan\Documents\Visual Studio 2013\Projects\MailerDaemon2\Typemock\bin\Debug\ValidatorTool.pdb
+C:\Users\nico.bulusan\Documents\Visual Studio 2013\Projects\MailerDaemon2\Typemock\bin\Debug\TypeMock.xml
+C:\Users\nico.bulusan\Documents\Visual Studio 2013\Projects\MailerDaemon2\Typemock\bin\Debug\Typemock.ArrangeActAssert.xml
+C:\Users\nico.bulusan\Documents\Visual Studio 2013\Projects\MailerDaemon2\Typemock\obj\Debug\ValidatorToolUnitTest.csprojResolveAssemblyReference.cache
+C:\Users\nico.bulusan\Documents\Visual Studio 2013\Projects\MailerDaemon2\Typemock\obj\Debug\ValidatorToolUnitTest.dll
+C:\Users\nico.bulusan\Documents\Visual Studio 2013\Projects\MailerDaemon2\Typemock\obj\Debug\ValidatorToolUnitTest.pdb

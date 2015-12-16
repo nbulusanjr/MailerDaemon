@@ -1,0 +1,60 @@
+﻿
+@{
+    ViewBag.Title = "MailDetails";
+    MailerGUI.Models.appmail mail = ViewBag.mail;
+    List<MailerGUI.Models.appmailcc> mailcc = ViewBag.mailcc;
+    List<MailerGUI.Models.appmailattachment> mailattachment = ViewBag.mailattachment;
+}
+
+<h2>MailDetails</h2>
+
+
+<table class="table table-bordered">
+    <tr>
+        <td class="col-md-4">Subject</td>
+        <td class="col-md-12">@mail.Subject</td>
+    </tr>
+    <tr>
+        <td>Recipient:</td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>CC:</td>
+        <td>
+            @{
+                foreach (var y in mailcc)
+                {
+                    WriteLiteral(y.To + ";");
+                }
+            }
+
+        </td>
+    </tr>
+    <tr>
+        <td>BCC:</td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>Attachments:</td>
+        <td>
+            @{
+                foreach (var y in mailattachment)
+                {
+                    WriteLiteral(y.Filename + ";");
+                }
+            }
+        </td>
+    </tr>
+    <tr>
+        <td>Message</td>
+        <td>@Html.Raw(mail.Content)</td>
+    </tr>
+    <tr>
+        <td>Status</td>
+        <td>@mail.isSent</td>
+    </tr>
+</table>
+
+
+
+
