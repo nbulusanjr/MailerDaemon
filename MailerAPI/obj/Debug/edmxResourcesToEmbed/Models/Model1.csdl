@@ -59,6 +59,8 @@
     <Property Name="DateCreated" Type="DateTime" Nullable="false" />
     <Property Name="DateLastUpdated" Type="DateTime" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
     <Property Name="isActive" Type="Int32" Nullable="false" />
+    <Property Name="ApplicationID" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="AppKey" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
   </EntityType>
   <EntityType Name="appmailattachment">
     <Key>

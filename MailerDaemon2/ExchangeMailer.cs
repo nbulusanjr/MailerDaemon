@@ -32,15 +32,14 @@ namespace MailerDaemon2
 
                 //try {
 
-                AppMailAgents appagent = (from a in db.appmailagents
-                                          join b in db.appmailagentassignments on a.id equals b.AppMailAgentID
-                                          where a.isActive == 1 && b.ApplicationID == appID && b.AppMailAgentID == agentID
+                AppMailAgents appagent = (from a in db.applications                                        
+                                          where a.IsActive == 1 && a.id==appID
                                           select new AppMailAgents
                                               {
                                                   id = a.id,
-                                                  username = a.username,
-                                                  password = a.password,
-                                                  domain = a.domain,
+                                                  username = a.MailUsername,
+                                                  password = a.MailPassword,
+                                                  domain = a.MailDomain,
                                                   DateCreated = a.DateCreated
                                               }).ToList<AppMailAgents>().FirstOrDefault();
 
@@ -142,6 +141,7 @@ namespace MailerDaemon2
 
                     ExtendedPropertyDefinition myExtendedPropertyDefinition = new ExtendedPropertyDefinition(myPropertySetId, "UUID", MapiPropertyType.String);
                     newmessage.SetExtendedProperty(myExtendedPropertyDefinition, g.ToString());
+                    newmessage.IsDeliveryReceiptRequested = true;
 
                     appmail appm = db.appmails.Where(x => x.id == mm.id).FirstOrDefault();
                     appm.UID = g.ToString();

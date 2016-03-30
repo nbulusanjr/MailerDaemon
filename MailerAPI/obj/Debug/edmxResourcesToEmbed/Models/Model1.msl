@@ -25,6 +25,8 @@
     <EntitySetMapping Name="appmailagents">
       <EntityTypeMapping TypeName="mailerdaemonModel.appmailagent">
         <MappingFragment StoreEntitySet="appmailagents">
+          <ScalarProperty Name="AppKey" ColumnName="AppKey" />
+          <ScalarProperty Name="ApplicationID" ColumnName="ApplicationID" />
           <ScalarProperty Name="isActive" ColumnName="isActive" />
           <ScalarProperty Name="DateLastUpdated" ColumnName="DateLastUpdated" />
           <ScalarProperty Name="DateCreated" ColumnName="DateCreated" />

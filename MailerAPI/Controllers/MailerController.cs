@@ -5,12 +5,16 @@ using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 using MailerAPI.Models;
+using MailerAPI.Filter;
 
 
 
 
 namespace MailerAPI.Controllers
 {
+
+    
+   // [RoutePrefix("api/mailer")]
     public class MailerController : ApiController
     {
         // GET api/mailer
@@ -39,8 +43,10 @@ namespace MailerAPI.Controllers
         public void Delete(int id)
         {
         }
+        // public string Post(MailerAPI.Models.appmail AppMail)
 
-        public string Post(MailerAPI.Models.appmail AppMail)
+        [HMACAuthentication]
+        public IHttpActionResult Post(MailerAPI.Models.appmail AppMail)
         {
 
             try {
@@ -158,7 +164,9 @@ namespace MailerAPI.Controllers
                 };
 
 
-                return Newtonsoft.Json.JsonConvert.SerializeObject(result);
+                return Ok(result);
+
+              //  return Newtonsoft.Json.JsonConvert.SerializeObject(result);
 
 
             }
@@ -172,8 +180,8 @@ namespace MailerAPI.Controllers
                     Message = e.Message
                 };
 
-
-                return Newtonsoft.Json.JsonConvert.SerializeObject(result);
+                return Ok(result);
+               // return Newtonsoft.Json.JsonConvert.SerializeObject(result);
 
             }
 

@@ -1,0 +1,379 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="MailerDaemonModel.Store" Provider="MySql.Data.MySqlClient" ProviderManifestToken="5.6" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="applications">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Description" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="DateCreated" Type="datetime" Precision="0" Nullable="false" />
+          <Property Name="DateLastUpdated" Type="timestamp" Precision="0" StoreGeneratedPattern="Identity" />
+        </EntityType>
+        <EntityType Name="appmailagentassignment">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ApplicationID" Type="int" Nullable="false" />
+          <Property Name="AppMailAgentID" Type="int" Nullable="false" />
+          <Property Name="DateCreated" Type="datetime" Precision="0" Nullable="false" />
+          <Property Name="DateLastUpdated" Type="timestamp" Precision="0" StoreGeneratedPattern="Identity" Nullable="false" />
+        </EntityType>
+        <EntityType Name="appmailagents">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="username" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="password" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="domain" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="port" Type="int" Nullable="false" />
+          <Property Name="mailingaddress" Type="varchar" MaxLength="255" />
+          <Property Name="DateCreated" Type="datetime" Precision="0" Nullable="false" />
+          <Property Name="DateLastUpdated" Type="timestamp" Precision="0" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="isActive" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="appmailattachments">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="AppMailID" Type="int" Nullable="false" />
+          <Property Name="Filename" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="Type" Type="varchar" MaxLength="255" />
+          <Property Name="Size" Type="double" />
+          <Property Name="Data" Type="longblob" />
+          <Property Name="DateCreated" Type="datetime" Precision="0" Nullable="false" />
+          <Property Name="DateLastUpdated" Type="timestamp" Precision="0" StoreGeneratedPattern="Identity" Nullable="false" />
+        </EntityType>
+        <EntityType Name="appmailbccs">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="AppMailID" Type="int" Nullable="false" />
+          <Property Name="To" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="DateCreated" Type="datetime" Precision="0" Nullable="false" />
+          <Property Name="DateLastUpdated" Type="timestamp" Precision="0" StoreGeneratedPattern="Identity" Nullable="false" />
+        </EntityType>
+        <EntityType Name="appmailccs">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="AppMailID" Type="int" Nullable="false" />
+          <Property Name="To" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="DateCreated" Type="datetime" Precision="0" Nullable="false" />
+          <Property Name="DateLastUpdated" Type="timestamp" Precision="0" StoreGeneratedPattern="Identity" Nullable="false" />
+        </EntityType>
+        <EntityType Name="appmailjob">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ApplicationID" Type="varchar" MaxLength="11" Nullable="false" />
+          <Property Name="DateCreated" Type="datetime" Precision="0" Nullable="false" />
+          <Property Name="Duration" Type="bigint" Nullable="false" />
+          <Property Name="DateLastUpdated" Type="timestamp" Precision="0" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Status" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="appmailrecipients">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="AppMailID" Type="int" Nullable="false" />
+          <Property Name="To" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="DateCreated" Type="datetime" Precision="0" Nullable="false" />
+          <Property Name="DateLastUpdated" Type="timestamp" Precision="0" StoreGeneratedPattern="Identity" Nullable="false" />
+        </EntityType>
+        <EntityType Name="appmails">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ApplicationID" Type="int" Nullable="false" />
+          <Property Name="From" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="Subject" Type="varchar" MaxLength="255" />
+          <Property Name="Content" Type="text" />
+          <Property Name="Retries" Type="int" Nullable="false" />
+          <Property Name="isSent" Type="int" Nullable="false" />
+          <Property Name="DateCreated" Type="datetime" Precision="0" Nullable="false" />
+          <Property Name="DateLastUpdated" Type="timestamp" Precision="0" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UID" Type="varchar" MaxLength="255" />
+        </EntityType>
+        <EntityContainer Name="MailerDaemonModelStoreContainer">
+          <EntitySet Name="applications" EntityType="Self.applications" Schema="mailerdaemon" store:Type="Tables" />
+          <EntitySet Name="appmailagentassignment" EntityType="Self.appmailagentassignment" Schema="mailerdaemon" store:Type="Tables" />
+          <EntitySet Name="appmailagents" EntityType="Self.appmailagents" Schema="mailerdaemon" store:Type="Tables" />
+          <EntitySet Name="appmailattachments" EntityType="Self.appmailattachments" Schema="mailerdaemon" store:Type="Tables" />
+          <EntitySet Name="appmailbccs" EntityType="Self.appmailbccs" Schema="mailerdaemon" store:Type="Tables" />
+          <EntitySet Name="appmailccs" EntityType="Self.appmailccs" Schema="mailerdaemon" store:Type="Tables" />
+          <EntitySet Name="appmailjob" EntityType="Self.appmailjob" Schema="mailerdaemon" store:Type="Tables" />
+          <EntitySet Name="appmailrecipients" EntityType="Self.appmailrecipients" Schema="mailerdaemon" store:Type="Tables" />
+          <EntitySet Name="appmails" EntityType="Self.appmails" Schema="mailerdaemon" store:Type="Tables" />
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="MailerDaemonModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="application">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Description" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="DateCreated" Type="DateTime" Nullable="false" />
+          <Property Name="DateLastUpdated" Type="DateTime" annotation:StoreGeneratedPattern="Identity" />
+        </EntityType>
+        <EntityType Name="appmailagentassignment">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ApplicationID" Type="Int32" Nullable="false" />
+          <Property Name="AppMailAgentID" Type="Int32" Nullable="false" />
+          <Property Name="DateCreated" Type="DateTime" Nullable="false" />
+          <Property Name="DateLastUpdated" Type="DateTime" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+        </EntityType>
+        <EntityType Name="appmailagent">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="username" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="password" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="domain" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="port" Type="Int32" Nullable="false" />
+          <Property Name="mailingaddress" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="DateCreated" Type="DateTime" Nullable="false" />
+          <Property Name="DateLastUpdated" Type="DateTime" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="isActive" Type="Int32" Nullable="false" />
+        </EntityType>
+        <EntityType Name="appmailattachment">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="AppMailID" Type="Int32" Nullable="false" />
+          <Property Name="Filename" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Type" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="Size" Type="Double" />
+          <Property Name="Data" Type="Binary" MaxLength="Max" FixedLength="false" />
+          <Property Name="DateCreated" Type="DateTime" Nullable="false" />
+          <Property Name="DateLastUpdated" Type="DateTime" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+        </EntityType>
+        <EntityType Name="appmailbcc">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="AppMailID" Type="Int32" Nullable="false" />
+          <Property Name="To" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="DateCreated" Type="DateTime" Nullable="false" />
+          <Property Name="DateLastUpdated" Type="DateTime" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+        </EntityType>
+        <EntityType Name="appmailcc">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="AppMailID" Type="Int32" Nullable="false" />
+          <Property Name="To" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="DateCreated" Type="DateTime" Nullable="false" />
+          <Property Name="DateLastUpdated" Type="DateTime" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+        </EntityType>
+        <EntityType Name="appmailjob">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ApplicationID" Type="String" MaxLength="11" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="DateCreated" Type="DateTime" Nullable="false" />
+          <Property Name="Duration" Type="Int64" Nullable="false" />
+          <Property Name="DateLastUpdated" Type="DateTime" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Status" Type="Int32" Nullable="false" />
+        </EntityType>
+        <EntityType Name="appmailrecipient">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="AppMailID" Type="Int32" Nullable="false" />
+          <Property Name="To" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="DateCreated" Type="DateTime" Nullable="false" />
+          <Property Name="DateLastUpdated" Type="DateTime" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+        </EntityType>
+        <EntityType Name="appmail">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ApplicationID" Type="Int32" Nullable="false" />
+          <Property Name="From" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Subject" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="Content" Type="String" MaxLength="65535" FixedLength="false" Unicode="false" />
+          <Property Name="Retries" Type="Int32" Nullable="false" />
+          <Property Name="isSent" Type="Int32" Nullable="false" />
+          <Property Name="DateCreated" Type="DateTime" Nullable="false" />
+          <Property Name="DateLastUpdated" Type="DateTime" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UID" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityContainer Name="MailerDaemonEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="applications" EntityType="Self.application" />
+          <EntitySet Name="appmailagentassignments" EntityType="Self.appmailagentassignment" />
+          <EntitySet Name="appmailagents" EntityType="Self.appmailagent" />
+          <EntitySet Name="appmailattachments" EntityType="Self.appmailattachment" />
+          <EntitySet Name="appmailbccs" EntityType="Self.appmailbcc" />
+          <EntitySet Name="appmailccs" EntityType="Self.appmailcc" />
+          <EntitySet Name="appmailjobs" EntityType="Self.appmailjob" />
+          <EntitySet Name="appmailrecipients" EntityType="Self.appmailrecipient" />
+          <EntitySet Name="appmails" EntityType="Self.appmail" />
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="MailerDaemonModelStoreContainer" CdmEntityContainer="MailerDaemonEntities">
+          <EntitySetMapping Name="applications">
+            <EntityTypeMapping TypeName="MailerDaemonModel.application">
+              <MappingFragment StoreEntitySet="applications">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="DateCreated" ColumnName="DateCreated" />
+                <ScalarProperty Name="DateLastUpdated" ColumnName="DateLastUpdated" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="appmailagentassignments">
+            <EntityTypeMapping TypeName="MailerDaemonModel.appmailagentassignment">
+              <MappingFragment StoreEntitySet="appmailagentassignment">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="ApplicationID" ColumnName="ApplicationID" />
+                <ScalarProperty Name="AppMailAgentID" ColumnName="AppMailAgentID" />
+                <ScalarProperty Name="DateCreated" ColumnName="DateCreated" />
+                <ScalarProperty Name="DateLastUpdated" ColumnName="DateLastUpdated" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="appmailagents">
+            <EntityTypeMapping TypeName="MailerDaemonModel.appmailagent">
+              <MappingFragment StoreEntitySet="appmailagents">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="username" ColumnName="username" />
+                <ScalarProperty Name="password" ColumnName="password" />
+                <ScalarProperty Name="domain" ColumnName="domain" />
+                <ScalarProperty Name="port" ColumnName="port" />
+                <ScalarProperty Name="mailingaddress" ColumnName="mailingaddress" />
+                <ScalarProperty Name="DateCreated" ColumnName="DateCreated" />
+                <ScalarProperty Name="DateLastUpdated" ColumnName="DateLastUpdated" />
+                <ScalarProperty Name="isActive" ColumnName="isActive" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="appmailattachments">
+            <EntityTypeMapping TypeName="MailerDaemonModel.appmailattachment">
+              <MappingFragment StoreEntitySet="appmailattachments">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="AppMailID" ColumnName="AppMailID" />
+                <ScalarProperty Name="Filename" ColumnName="Filename" />
+                <ScalarProperty Name="Type" ColumnName="Type" />
+                <ScalarProperty Name="Size" ColumnName="Size" />
+                <ScalarProperty Name="Data" ColumnName="Data" />
+                <ScalarProperty Name="DateCreated" ColumnName="DateCreated" />
+                <ScalarProperty Name="DateLastUpdated" ColumnName="DateLastUpdated" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="appmailbccs">
+            <EntityTypeMapping TypeName="MailerDaemonModel.appmailbcc">
+              <MappingFragment StoreEntitySet="appmailbccs">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="AppMailID" ColumnName="AppMailID" />
+                <ScalarProperty Name="To" ColumnName="To" />
+                <ScalarProperty Name="DateCreated" ColumnName="DateCreated" />
+                <ScalarProperty Name="DateLastUpdated" ColumnName="DateLastUpdated" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="appmailccs">
+            <EntityTypeMapping TypeName="MailerDaemonModel.appmailcc">
+              <MappingFragment StoreEntitySet="appmailccs">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="AppMailID" ColumnName="AppMailID" />
+                <ScalarProperty Name="To" ColumnName="To" />
+                <ScalarProperty Name="DateCreated" ColumnName="DateCreated" />
+                <ScalarProperty Name="DateLastUpdated" ColumnName="DateLastUpdated" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="appmailjobs">
+            <EntityTypeMapping TypeName="MailerDaemonModel.appmailjob">
+              <MappingFragment StoreEntitySet="appmailjob">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="ApplicationID" ColumnName="ApplicationID" />
+                <ScalarProperty Name="DateCreated" ColumnName="DateCreated" />
+                <ScalarProperty Name="Duration" ColumnName="Duration" />
+                <ScalarProperty Name="DateLastUpdated" ColumnName="DateLastUpdated" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="appmailrecipients">
+            <EntityTypeMapping TypeName="MailerDaemonModel.appmailrecipient">
+              <MappingFragment StoreEntitySet="appmailrecipients">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="AppMailID" ColumnName="AppMailID" />
+                <ScalarProperty Name="To" ColumnName="To" />
+                <ScalarProperty Name="DateCreated" ColumnName="DateCreated" />
+                <ScalarProperty Name="DateLastUpdated" ColumnName="DateLastUpdated" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="appmails">
+            <EntityTypeMapping TypeName="MailerDaemonModel.appmail">
+              <MappingFragment StoreEntitySet="appmails">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="ApplicationID" ColumnName="ApplicationID" />
+                <ScalarProperty Name="From" ColumnName="From" />
+                <ScalarProperty Name="Subject" ColumnName="Subject" />
+                <ScalarProperty Name="Content" ColumnName="Content" />
+                <ScalarProperty Name="Retries" ColumnName="Retries" />
+                <ScalarProperty Name="isSent" ColumnName="isSent" />
+                <ScalarProperty Name="DateCreated" ColumnName="DateCreated" />
+                <ScalarProperty Name="DateLastUpdated" ColumnName="DateLastUpdated" />
+                <ScalarProperty Name="UID" ColumnName="UID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="true" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

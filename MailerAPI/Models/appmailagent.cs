@@ -23,5 +23,7 @@ namespace MailerAPI.Models
         public System.DateTime DateCreated { get; set; }
         public System.DateTime DateLastUpdated { get; set; }
         public int isActive { get; set; }
+        public string ApplicationID { get; set; }
+        public string AppKey { get; set; }
     }
 }

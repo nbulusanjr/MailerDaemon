@@ -32,6 +32,8 @@
     <Property Name="DateCreated" Type="datetime" Precision="0" Nullable="false" />
     <Property Name="DateLastUpdated" Type="timestamp" Precision="0" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="isActive" Type="int" Nullable="false" />
+    <Property Name="ApplicationID" Type="varchar" MaxLength="255" />
+    <Property Name="AppKey" Type="varchar" MaxLength="255" />
   </EntityType>
   <EntityType Name="appmailattachments">
     <Key>
@@ -102,7 +104,7 @@
     <Property Name="DateLastUpdated" Type="timestamp" Precision="0" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="UID" Type="varchar" MaxLength="255" />
   </EntityType>
-  <Association Name="FK_appmailattachments_appmails">
+  <Association Name="appmailattachments_ibfk_1">
     <End Role="appmails" Type="Self.appmails" Multiplicity="1">
       <OnDelete Action="Cascade" />
     </End>
@@ -116,7 +118,7 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <Association Name="FK_appmailbccs_appmails">
+  <Association Name="appmailbccs_ibfk_1">
     <End Role="appmails" Type="Self.appmails" Multiplicity="1">
       <OnDelete Action="Cascade" />
     </End>
@@ -130,7 +132,7 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <Association Name="FK_appmailccs_appmails">
+  <Association Name="appmailccs_ibfk_1">
     <End Role="appmails" Type="Self.appmails" Multiplicity="1">
       <OnDelete Action="Cascade" />
     </End>
@@ -144,7 +146,7 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <Association Name="FK_appmailrecipients_appmails">
+  <Association Name="appmailrecipients_ibfk_1">
     <End Role="appmails" Type="Self.appmails" Multiplicity="1" />
     <End Role="appmailrecipients" Type="Self.appmailrecipients" Multiplicity="*" />
     <ReferentialConstraint>
@@ -166,19 +168,19 @@
     <EntitySet Name="appmailjob" EntityType="Self.appmailjob" Schema="mailerdaemon" store:Type="Tables" />
     <EntitySet Name="appmailrecipients" EntityType="Self.appmailrecipients" Schema="mailerdaemon" store:Type="Tables" />
     <EntitySet Name="appmails" EntityType="Self.appmails" Schema="mailerdaemon" store:Type="Tables" />
-    <AssociationSet Name="FK_appmailattachments_appmails" Association="Self.FK_appmailattachments_appmails">
+    <AssociationSet Name="appmailattachments_ibfk_1" Association="Self.appmailattachments_ibfk_1">
       <End Role="appmails" EntitySet="appmails" />
       <End Role="appmailattachments" EntitySet="appmailattachments" />
     </AssociationSet>
-    <AssociationSet Name="FK_appmailbccs_appmails" Association="Self.FK_appmailbccs_appmails">
+    <AssociationSet Name="appmailbccs_ibfk_1" Association="Self.appmailbccs_ibfk_1">
       <End Role="appmails" EntitySet="appmails" />
       <End Role="appmailbccs" EntitySet="appmailbccs" />
     </AssociationSet>
-    <AssociationSet Name="FK_appmailccs_appmails" Association="Self.FK_appmailccs_appmails">
+    <AssociationSet Name="appmailccs_ibfk_1" Association="Self.appmailccs_ibfk_1">
       <End Role="appmails" EntitySet="appmails" />
       <End Role="appmailccs" EntitySet="appmailccs" />
     </AssociationSet>
-    <AssociationSet Name="FK_appmailrecipients_appmails" Association="Self.FK_appmailrecipients_appmails">
+    <AssociationSet Name="appmailrecipients_ibfk_1" Association="Self.appmailrecipients_ibfk_1">
       <End Role="appmails" EntitySet="appmails" />
       <End Role="appmailrecipients" EntitySet="appmailrecipients" />
     </AssociationSet>

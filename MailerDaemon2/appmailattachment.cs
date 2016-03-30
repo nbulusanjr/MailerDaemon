@@ -22,5 +22,7 @@ namespace MailerDaemon2
         public byte[] Data { get; set; }
         public System.DateTime DateCreated { get; set; }
         public System.DateTime DateLastUpdated { get; set; }
+    
+        public virtual appmail appmail { get; set; }
     }
 }
