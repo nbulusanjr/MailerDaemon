@@ -32,6 +32,7 @@ namespace MailerDaemon2
         public DbSet<appmailjob> appmailjobs { get; set; }
         public DbSet<appmailrecipient> appmailrecipients { get; set; }
         public DbSet<appmail> appmails { get; set; }
+        public DbSet<role> roles { get; set; }
         public DbSet<user> users { get; set; }
     }
 }

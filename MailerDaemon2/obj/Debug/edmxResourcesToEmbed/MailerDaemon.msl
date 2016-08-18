@@ -4,6 +4,7 @@
     <EntitySetMapping Name="applications">
       <EntityTypeMapping TypeName="MailerDaemonModel.application">
         <MappingFragment StoreEntitySet="applications">
+          <ScalarProperty Name="DaemonPort" ColumnName="DaemonPort" />
           <ScalarProperty Name="IsActive" ColumnName="IsActive" />
           <ScalarProperty Name="MailServiceUrl" ColumnName="MailServiceUrl" />
           <ScalarProperty Name="MailPassword" ColumnName="MailPassword" />
@@ -95,9 +96,21 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
+    <EntitySetMapping Name="roles">
+      <EntityTypeMapping TypeName="MailerDaemonModel.role">
+        <MappingFragment StoreEntitySet="roles">
+          <ScalarProperty Name="DateLastUpdate" ColumnName="DateLastUpdate" />
+          <ScalarProperty Name="DateCreated" ColumnName="DateCreated" />
+          <ScalarProperty Name="Description" ColumnName="Description" />
+          <ScalarProperty Name="id" ColumnName="id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
     <EntitySetMapping Name="users">
       <EntityTypeMapping TypeName="MailerDaemonModel.user">
         <MappingFragment StoreEntitySet="users">
+          <ScalarProperty Name="SID" ColumnName="SID" />
+          <ScalarProperty Name="RoleID" ColumnName="RoleID" />
           <ScalarProperty Name="Email" ColumnName="Email" />
           <ScalarProperty Name="Fullname" ColumnName="Fullname" />
           <ScalarProperty Name="Password" ColumnName="Password" />

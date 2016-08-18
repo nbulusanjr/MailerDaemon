@@ -28,7 +28,7 @@ namespace MailerDaemon2
          
             Console.WriteLine("STARTED.....");
 
-            string url = "http://*:8091";
+            string url = "http://*:9098";
             using (WebApp.Start(url))
             {
                 Console.WriteLine("Server running on {0}", url);
@@ -50,9 +50,11 @@ namespace MailerDaemon2
 
             if (app == null)
             {
-                MyHub hub = new MyHub();
-                
-                hub.Clients.All.addMessage("SYSTEM", "UNABLE TO RETRIEVE RECORD USING THE PROVIDED CREDENTIALS");
+               // MyHub hub = new MyHub();
+
+                var context = GlobalHost.ConnectionManager.GetHubContext<MyHub>();
+
+                context.Clients.All.addMessage("SYSTEM", "UNABLE TO RETRIEVE RECORD USING THE PROVIDED CREDENTIALS");
             }
 
 

@@ -2,27 +2,27 @@
 <Schema Namespace="mailerdaemonModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
   <EntityContainer Name="mailerdaemonEntities2" annotation:LazyLoadingEnabled="true">
     <EntitySet Name="applications" EntityType="mailerdaemonModel.application" />
-    <EntitySet Name="appmailagentassignments" EntityType="mailerdaemonModel.appmailagentassignment" />
-    <EntitySet Name="appmailagents" EntityType="mailerdaemonModel.appmailagent" />
     <EntitySet Name="appmailattachments" EntityType="mailerdaemonModel.appmailattachment" />
     <EntitySet Name="appmailbccs" EntityType="mailerdaemonModel.appmailbcc" />
     <EntitySet Name="appmailccs" EntityType="mailerdaemonModel.appmailcc" />
     <EntitySet Name="appmailjobs" EntityType="mailerdaemonModel.appmailjob" />
     <EntitySet Name="appmailrecipients" EntityType="mailerdaemonModel.appmailrecipient" />
     <EntitySet Name="appmails" EntityType="mailerdaemonModel.appmail" />
-    <AssociationSet Name="FK_appmailattachments_appmails" Association="mailerdaemonModel.FK_appmailattachments_appmails">
+    <EntitySet Name="roles" EntityType="mailerdaemonModel.role" />
+    <EntitySet Name="users" EntityType="mailerdaemonModel.user" />
+    <AssociationSet Name="appmailattachments_ibfk_1" Association="mailerdaemonModel.appmailattachments_ibfk_1">
       <End Role="appmail" EntitySet="appmails" />
       <End Role="appmailattachment" EntitySet="appmailattachments" />
     </AssociationSet>
-    <AssociationSet Name="FK_appmailbccs_appmails" Association="mailerdaemonModel.FK_appmailbccs_appmails">
+    <AssociationSet Name="appmailbccs_ibfk_1" Association="mailerdaemonModel.appmailbccs_ibfk_1">
       <End Role="appmail" EntitySet="appmails" />
       <End Role="appmailbcc" EntitySet="appmailbccs" />
     </AssociationSet>
-    <AssociationSet Name="FK_appmailccs_appmails" Association="mailerdaemonModel.FK_appmailccs_appmails">
+    <AssociationSet Name="appmailccs_ibfk_1" Association="mailerdaemonModel.appmailccs_ibfk_1">
       <End Role="appmail" EntitySet="appmails" />
       <End Role="appmailcc" EntitySet="appmailccs" />
     </AssociationSet>
-    <AssociationSet Name="FK_appmailrecipients_appmails" Association="mailerdaemonModel.FK_appmailrecipients_appmails">
+    <AssociationSet Name="appmailrecipients_ibfk_1" Association="mailerdaemonModel.appmailrecipients_ibfk_1">
       <End Role="appmail" EntitySet="appmails" />
       <End Role="appmailrecipient" EntitySet="appmailrecipients" />
     </AssociationSet>
@@ -34,33 +34,17 @@
     <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
     <Property Name="Description" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
     <Property Name="DateCreated" Type="DateTime" Nullable="false" />
-    <Property Name="DateLastUpdated" Type="DateTime" annotation:StoreGeneratedPattern="Identity" />
-  </EntityType>
-  <EntityType Name="appmailagentassignment">
-    <Key>
-      <PropertyRef Name="id" />
-    </Key>
-    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-    <Property Name="ApplicationID" Type="Int32" Nullable="false" />
-    <Property Name="AppMailAgentID" Type="Int32" Nullable="false" />
-    <Property Name="DateCreated" Type="DateTime" Nullable="false" />
-    <Property Name="DateLastUpdated" Type="DateTime" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-  </EntityType>
-  <EntityType Name="appmailagent">
-    <Key>
-      <PropertyRef Name="id" />
-    </Key>
-    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-    <Property Name="username" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
-    <Property Name="password" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
-    <Property Name="domain" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
-    <Property Name="port" Type="Int32" Nullable="false" />
-    <Property Name="mailingaddress" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
-    <Property Name="DateCreated" Type="DateTime" Nullable="false" />
-    <Property Name="DateLastUpdated" Type="DateTime" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-    <Property Name="isActive" Type="Int32" Nullable="false" />
-    <Property Name="ApplicationID" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
-    <Property Name="AppKey" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="DateLastUpdated" Type="DateTime" />
+    <Property Name="UserID" Type="Int32" Nullable="false" />
+    <Property Name="ApplicationGUID" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="ApplicationKey" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="MailDomain" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="MailAddress" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="MailUsername" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="MailPassword" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="MailServiceUrl" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="IsActive" Type="Int32" Nullable="false" />
+    <Property Name="DaemonPort" Type="Int32" Nullable="false" />
   </EntityType>
   <EntityType Name="appmailattachment">
     <Key>
@@ -73,8 +57,8 @@
     <Property Name="Size" Type="Double" />
     <Property Name="Data" Type="Binary" MaxLength="Max" FixedLength="false" />
     <Property Name="DateCreated" Type="DateTime" Nullable="false" />
-    <Property Name="DateLastUpdated" Type="DateTime" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-    <NavigationProperty Name="appmail" Relationship="mailerdaemonModel.FK_appmailattachments_appmails" FromRole="appmailattachment" ToRole="appmail" />
+    <Property Name="DateLastUpdated" Type="DateTime" Nullable="false" />
+    <NavigationProperty Name="appmail" Relationship="mailerdaemonModel.appmailattachments_ibfk_1" FromRole="appmailattachment" ToRole="appmail" />
   </EntityType>
   <EntityType Name="appmailbcc">
     <Key>
@@ -84,8 +68,8 @@
     <Property Name="AppMailID" Type="Int32" Nullable="false" />
     <Property Name="To" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
     <Property Name="DateCreated" Type="DateTime" Nullable="false" />
-    <Property Name="DateLastUpdated" Type="DateTime" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-    <NavigationProperty Name="appmail" Relationship="mailerdaemonModel.FK_appmailbccs_appmails" FromRole="appmailbcc" ToRole="appmail" />
+    <Property Name="DateLastUpdated" Type="DateTime" Nullable="false" />
+    <NavigationProperty Name="appmail" Relationship="mailerdaemonModel.appmailbccs_ibfk_1" FromRole="appmailbcc" ToRole="appmail" />
   </EntityType>
   <EntityType Name="appmailcc">
     <Key>
@@ -95,8 +79,8 @@
     <Property Name="AppMailID" Type="Int32" Nullable="false" />
     <Property Name="To" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
     <Property Name="DateCreated" Type="DateTime" Nullable="false" />
-    <Property Name="DateLastUpdated" Type="DateTime" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-    <NavigationProperty Name="appmail" Relationship="mailerdaemonModel.FK_appmailccs_appmails" FromRole="appmailcc" ToRole="appmail" />
+    <Property Name="DateLastUpdated" Type="DateTime" Nullable="false" />
+    <NavigationProperty Name="appmail" Relationship="mailerdaemonModel.appmailccs_ibfk_1" FromRole="appmailcc" ToRole="appmail" />
   </EntityType>
   <EntityType Name="appmailjob">
     <Key>
@@ -106,7 +90,7 @@
     <Property Name="ApplicationID" Type="String" Nullable="false" MaxLength="11" FixedLength="false" Unicode="false" />
     <Property Name="DateCreated" Type="DateTime" Nullable="false" />
     <Property Name="Duration" Type="Int64" Nullable="false" />
-    <Property Name="DateLastUpdated" Type="DateTime" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="DateLastUpdated" Type="DateTime" Nullable="false" />
     <Property Name="Status" Type="Int32" Nullable="false" />
   </EntityType>
   <EntityType Name="appmailrecipient">
@@ -117,8 +101,8 @@
     <Property Name="AppMailID" Type="Int32" Nullable="false" />
     <Property Name="To" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
     <Property Name="DateCreated" Type="DateTime" Nullable="false" />
-    <Property Name="DateLastUpdated" Type="DateTime" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-    <NavigationProperty Name="appmail" Relationship="mailerdaemonModel.FK_appmailrecipients_appmails" FromRole="appmailrecipient" ToRole="appmail" />
+    <Property Name="DateLastUpdated" Type="DateTime" Nullable="false" />
+    <NavigationProperty Name="appmail" Relationship="mailerdaemonModel.appmailrecipients_ibfk_1" FromRole="appmailrecipient" ToRole="appmail" />
   </EntityType>
   <EntityType Name="appmail">
     <Key>
@@ -132,14 +116,35 @@
     <Property Name="Retries" Type="Int32" Nullable="false" />
     <Property Name="isSent" Type="Int32" Nullable="false" />
     <Property Name="DateCreated" Type="DateTime" Nullable="false" />
-    <Property Name="DateLastUpdated" Type="DateTime" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="DateLastUpdated" Type="DateTime" Nullable="false" />
     <Property Name="UID" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
-    <NavigationProperty Name="appmailattachments" Relationship="mailerdaemonModel.FK_appmailattachments_appmails" FromRole="appmail" ToRole="appmailattachment" />
-    <NavigationProperty Name="appmailbccs" Relationship="mailerdaemonModel.FK_appmailbccs_appmails" FromRole="appmail" ToRole="appmailbcc" />
-    <NavigationProperty Name="appmailccs" Relationship="mailerdaemonModel.FK_appmailccs_appmails" FromRole="appmail" ToRole="appmailcc" />
-    <NavigationProperty Name="appmailrecipients" Relationship="mailerdaemonModel.FK_appmailrecipients_appmails" FromRole="appmail" ToRole="appmailrecipient" />
+    <NavigationProperty Name="appmailattachments" Relationship="mailerdaemonModel.appmailattachments_ibfk_1" FromRole="appmail" ToRole="appmailattachment" />
+    <NavigationProperty Name="appmailbccs" Relationship="mailerdaemonModel.appmailbccs_ibfk_1" FromRole="appmail" ToRole="appmailbcc" />
+    <NavigationProperty Name="appmailccs" Relationship="mailerdaemonModel.appmailccs_ibfk_1" FromRole="appmail" ToRole="appmailcc" />
+    <NavigationProperty Name="appmailrecipients" Relationship="mailerdaemonModel.appmailrecipients_ibfk_1" FromRole="appmail" ToRole="appmailrecipient" />
   </EntityType>
-  <Association Name="FK_appmailattachments_appmails">
+  <EntityType Name="role">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Description" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="DateCreated" Type="DateTime" Nullable="false" />
+    <Property Name="DateLastUpdate" Type="DateTime" />
+  </EntityType>
+  <EntityType Name="user">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Username" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="Password" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="Fullname" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="Email" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="RoleID" Type="Int32" Nullable="false" />
+    <Property Name="SID" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+  </EntityType>
+  <Association Name="appmailattachments_ibfk_1">
     <End Type="mailerdaemonModel.appmail" Role="appmail" Multiplicity="1">
       <OnDelete Action="Cascade" />
     </End>
@@ -153,7 +158,7 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <Association Name="FK_appmailbccs_appmails">
+  <Association Name="appmailbccs_ibfk_1">
     <End Type="mailerdaemonModel.appmail" Role="appmail" Multiplicity="1">
       <OnDelete Action="Cascade" />
     </End>
@@ -167,7 +172,7 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <Association Name="FK_appmailccs_appmails">
+  <Association Name="appmailccs_ibfk_1">
     <End Type="mailerdaemonModel.appmail" Role="appmail" Multiplicity="1">
       <OnDelete Action="Cascade" />
     </End>
@@ -181,7 +186,7 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <Association Name="FK_appmailrecipients_appmails">
+  <Association Name="appmailrecipients_ibfk_1">
     <End Type="mailerdaemonModel.appmail" Role="appmail" Multiplicity="1" />
     <End Type="mailerdaemonModel.appmailrecipient" Role="appmailrecipient" Multiplicity="*" />
     <ReferentialConstraint>

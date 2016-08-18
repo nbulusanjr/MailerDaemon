@@ -27,5 +27,6 @@ namespace MailerDaemon2
         public string MailPassword { get; set; }
         public string MailServiceUrl { get; set; }
         public int IsActive { get; set; }
+        public int DaemonPort { get; set; }
     }
 }

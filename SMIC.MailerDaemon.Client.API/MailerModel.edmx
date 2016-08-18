@@ -1,0 +1,548 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="mailerdaemonModel.Store" Provider="MySql.Data.MySqlClient" ProviderManifestToken="5.5" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="applications">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Description" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="DateCreated" Type="datetime" Precision="0" Nullable="false" />
+          <Property Name="DateLastUpdated" Type="timestamp" Precision="0" />
+          <Property Name="UserID" Type="int" Nullable="false" />
+          <Property Name="ApplicationGUID" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="ApplicationKey" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="MailDomain" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="MailAddress" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="MailUsername" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="MailPassword" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="MailServiceUrl" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="IsActive" Type="int" Nullable="false" />
+          <Property Name="DaemonPort" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="appmailattachments">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="AppMailID" Type="int" Nullable="false" />
+          <Property Name="Filename" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="Type" Type="varchar" MaxLength="255" />
+          <Property Name="Size" Type="double" />
+          <Property Name="Data" Type="longblob" />
+          <Property Name="DateCreated" Type="datetime" Precision="0" Nullable="false" />
+          <Property Name="DateLastUpdated" Type="timestamp" Precision="0" Nullable="false" />
+        </EntityType>
+        <EntityType Name="appmailbccs">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="AppMailID" Type="int" Nullable="false" />
+          <Property Name="To" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="DateCreated" Type="datetime" Precision="0" Nullable="false" />
+          <Property Name="DateLastUpdated" Type="timestamp" Precision="0" Nullable="false" />
+        </EntityType>
+        <EntityType Name="appmailccs">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="AppMailID" Type="int" Nullable="false" />
+          <Property Name="To" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="DateCreated" Type="datetime" Precision="0" Nullable="false" />
+          <Property Name="DateLastUpdated" Type="timestamp" Precision="0" Nullable="false" />
+        </EntityType>
+        <EntityType Name="appmailjob">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ApplicationID" Type="varchar" MaxLength="11" Nullable="false" />
+          <Property Name="DateCreated" Type="datetime" Precision="0" Nullable="false" />
+          <Property Name="Duration" Type="bigint" Nullable="false" />
+          <Property Name="DateLastUpdated" Type="timestamp" Precision="0" Nullable="false" />
+          <Property Name="Status" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="appmailrecipients">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="AppMailID" Type="int" Nullable="false" />
+          <Property Name="To" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="DateCreated" Type="datetime" Precision="0" Nullable="false" />
+          <Property Name="DateLastUpdated" Type="timestamp" Precision="0" Nullable="false" />
+        </EntityType>
+        <EntityType Name="appmails">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ApplicationID" Type="int" Nullable="false" />
+          <Property Name="From" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="Subject" Type="varchar" MaxLength="255" />
+          <Property Name="Content" Type="text" />
+          <Property Name="Retries" Type="int" Nullable="false" />
+          <Property Name="isSent" Type="int" Nullable="false" />
+          <Property Name="DateCreated" Type="datetime" Precision="0" Nullable="false" />
+          <Property Name="DateLastUpdated" Type="timestamp" Precision="0" Nullable="false" />
+          <Property Name="UID" Type="varchar" MaxLength="255" />
+        </EntityType>
+        <EntityType Name="roles">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Description" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="DateCreated" Type="datetime" Precision="0" Nullable="false" />
+          <Property Name="DateLastUpdate" Type="timestamp" Precision="0" />
+        </EntityType>
+        <EntityType Name="users">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Username" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="Password" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="Fullname" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="Email" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="RoleID" Type="int" Nullable="false" />
+          <Property Name="SID" Type="varchar" MaxLength="255" />
+        </EntityType>
+        <Association Name="appmailattachments_ibfk_1">
+          <End Role="appmails" Type="Self.appmails" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="appmailattachments" Type="Self.appmailattachments" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="appmails">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="appmailattachments">
+              <PropertyRef Name="AppMailID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="appmailbccs_ibfk_1">
+          <End Role="appmails" Type="Self.appmails" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="appmailbccs" Type="Self.appmailbccs" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="appmails">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="appmailbccs">
+              <PropertyRef Name="AppMailID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="appmailccs_ibfk_1">
+          <End Role="appmails" Type="Self.appmails" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="appmailccs" Type="Self.appmailccs" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="appmails">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="appmailccs">
+              <PropertyRef Name="AppMailID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="appmailrecipients_ibfk_1">
+          <End Role="appmails" Type="Self.appmails" Multiplicity="1" />
+          <End Role="appmailrecipients" Type="Self.appmailrecipients" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="appmails">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="appmailrecipients">
+              <PropertyRef Name="AppMailID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="mailerdaemonModelStoreContainer">
+          <EntitySet Name="applications" EntityType="Self.applications" Schema="mailerdaemon" store:Type="Tables" />
+          <EntitySet Name="appmailattachments" EntityType="Self.appmailattachments" Schema="mailerdaemon" store:Type="Tables" />
+          <EntitySet Name="appmailbccs" EntityType="Self.appmailbccs" Schema="mailerdaemon" store:Type="Tables" />
+          <EntitySet Name="appmailccs" EntityType="Self.appmailccs" Schema="mailerdaemon" store:Type="Tables" />
+          <EntitySet Name="appmailjob" EntityType="Self.appmailjob" Schema="mailerdaemon" store:Type="Tables" />
+          <EntitySet Name="appmailrecipients" EntityType="Self.appmailrecipients" Schema="mailerdaemon" store:Type="Tables" />
+          <EntitySet Name="appmails" EntityType="Self.appmails" Schema="mailerdaemon" store:Type="Tables" />
+          <EntitySet Name="roles" EntityType="Self.roles" Schema="mailerdaemon" store:Type="Tables" />
+          <EntitySet Name="users" EntityType="Self.users" Schema="mailerdaemon" store:Type="Tables" />
+          <AssociationSet Name="appmailattachments_ibfk_1" Association="Self.appmailattachments_ibfk_1">
+            <End Role="appmails" EntitySet="appmails" />
+            <End Role="appmailattachments" EntitySet="appmailattachments" />
+          </AssociationSet>
+          <AssociationSet Name="appmailbccs_ibfk_1" Association="Self.appmailbccs_ibfk_1">
+            <End Role="appmails" EntitySet="appmails" />
+            <End Role="appmailbccs" EntitySet="appmailbccs" />
+          </AssociationSet>
+          <AssociationSet Name="appmailccs_ibfk_1" Association="Self.appmailccs_ibfk_1">
+            <End Role="appmails" EntitySet="appmails" />
+            <End Role="appmailccs" EntitySet="appmailccs" />
+          </AssociationSet>
+          <AssociationSet Name="appmailrecipients_ibfk_1" Association="Self.appmailrecipients_ibfk_1">
+            <End Role="appmails" EntitySet="appmails" />
+            <End Role="appmailrecipients" EntitySet="appmailrecipients" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="mailerdaemonModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="application">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Description" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="DateCreated" Type="DateTime" Nullable="false" />
+          <Property Name="DateLastUpdated" Type="DateTime" />
+          <Property Name="UserID" Type="Int32" Nullable="false" />
+          <Property Name="ApplicationGUID" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="ApplicationKey" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="MailDomain" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="MailAddress" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="MailUsername" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="MailPassword" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="MailServiceUrl" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="IsActive" Type="Int32" Nullable="false" />
+          <Property Name="DaemonPort" Type="Int32" Nullable="false" />
+        </EntityType>
+        <EntityType Name="appmailattachment">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="AppMailID" Type="Int32" Nullable="false" />
+          <Property Name="Filename" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Type" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="Size" Type="Double" />
+          <Property Name="Data" Type="Binary" MaxLength="Max" FixedLength="false" />
+          <Property Name="DateCreated" Type="DateTime" Nullable="false" />
+          <Property Name="DateLastUpdated" Type="DateTime" Nullable="false" />
+          <NavigationProperty Name="appmail" Relationship="Self.appmailattachments_ibfk_1" FromRole="appmailattachments" ToRole="appmails" />
+        </EntityType>
+        <EntityType Name="appmailbcc">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="AppMailID" Type="Int32" Nullable="false" />
+          <Property Name="To" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="DateCreated" Type="DateTime" Nullable="false" />
+          <Property Name="DateLastUpdated" Type="DateTime" Nullable="false" />
+          <NavigationProperty Name="appmail" Relationship="Self.appmailbccs_ibfk_1" FromRole="appmailbccs" ToRole="appmails" />
+        </EntityType>
+        <EntityType Name="appmailcc">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="AppMailID" Type="Int32" Nullable="false" />
+          <Property Name="To" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="DateCreated" Type="DateTime" Nullable="false" />
+          <Property Name="DateLastUpdated" Type="DateTime" Nullable="false" />
+          <NavigationProperty Name="appmail" Relationship="Self.appmailccs_ibfk_1" FromRole="appmailccs" ToRole="appmails" />
+        </EntityType>
+        <EntityType Name="appmailjob">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ApplicationID" Type="String" MaxLength="11" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="DateCreated" Type="DateTime" Nullable="false" />
+          <Property Name="Duration" Type="Int64" Nullable="false" />
+          <Property Name="DateLastUpdated" Type="DateTime" Nullable="false" />
+          <Property Name="Status" Type="Int32" Nullable="false" />
+        </EntityType>
+        <EntityType Name="appmailrecipient">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="AppMailID" Type="Int32" Nullable="false" />
+          <Property Name="To" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="DateCreated" Type="DateTime" Nullable="false" />
+          <Property Name="DateLastUpdated" Type="DateTime" Nullable="false" />
+          <NavigationProperty Name="appmail" Relationship="Self.appmailrecipients_ibfk_1" FromRole="appmailrecipients" ToRole="appmails" />
+        </EntityType>
+        <EntityType Name="appmail">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ApplicationID" Type="Int32" Nullable="false" />
+          <Property Name="From" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Subject" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="Content" Type="String" MaxLength="65535" FixedLength="false" Unicode="false" />
+          <Property Name="Retries" Type="Int32" Nullable="false" />
+          <Property Name="isSent" Type="Int32" Nullable="false" />
+          <Property Name="DateCreated" Type="DateTime" Nullable="false" />
+          <Property Name="DateLastUpdated" Type="DateTime" Nullable="false" />
+          <Property Name="UID" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="appmailattachments" Relationship="Self.appmailattachments_ibfk_1" FromRole="appmails" ToRole="appmailattachments" />
+          <NavigationProperty Name="appmailbccs" Relationship="Self.appmailbccs_ibfk_1" FromRole="appmails" ToRole="appmailbccs" />
+          <NavigationProperty Name="appmailccs" Relationship="Self.appmailccs_ibfk_1" FromRole="appmails" ToRole="appmailccs" />
+          <NavigationProperty Name="appmailrecipients" Relationship="Self.appmailrecipients_ibfk_1" FromRole="appmails" ToRole="appmailrecipients" />
+        </EntityType>
+        <EntityType Name="role">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Description" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="DateCreated" Type="DateTime" Nullable="false" />
+          <Property Name="DateLastUpdate" Type="DateTime" />
+        </EntityType>
+        <EntityType Name="user">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Username" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Password" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Fullname" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Email" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="RoleID" Type="Int32" Nullable="false" />
+          <Property Name="SID" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <Association Name="appmailattachments_ibfk_1">
+          <End Role="appmails" Type="Self.appmail" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="appmailattachments" Type="Self.appmailattachment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="appmails">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="appmailattachments">
+              <PropertyRef Name="AppMailID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="appmailbccs_ibfk_1">
+          <End Role="appmails" Type="Self.appmail" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="appmailbccs" Type="Self.appmailbcc" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="appmails">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="appmailbccs">
+              <PropertyRef Name="AppMailID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="appmailccs_ibfk_1">
+          <End Role="appmails" Type="Self.appmail" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="appmailccs" Type="Self.appmailcc" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="appmails">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="appmailccs">
+              <PropertyRef Name="AppMailID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="appmailrecipients_ibfk_1">
+          <End Role="appmails" Type="Self.appmail" Multiplicity="1" />
+          <End Role="appmailrecipients" Type="Self.appmailrecipient" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="appmails">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="appmailrecipients">
+              <PropertyRef Name="AppMailID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="mailerdaemonEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="applications" EntityType="Self.application" />
+          <EntitySet Name="appmailattachments" EntityType="Self.appmailattachment" />
+          <EntitySet Name="appmailbccs" EntityType="Self.appmailbcc" />
+          <EntitySet Name="appmailccs" EntityType="Self.appmailcc" />
+          <EntitySet Name="appmailjobs" EntityType="Self.appmailjob" />
+          <EntitySet Name="appmailrecipients" EntityType="Self.appmailrecipient" />
+          <EntitySet Name="appmails" EntityType="Self.appmail" />
+          <EntitySet Name="roles" EntityType="Self.role" />
+          <EntitySet Name="users" EntityType="Self.user" />
+          <AssociationSet Name="appmailattachments_ibfk_1" Association="Self.appmailattachments_ibfk_1">
+            <End Role="appmails" EntitySet="appmails" />
+            <End Role="appmailattachments" EntitySet="appmailattachments" />
+          </AssociationSet>
+          <AssociationSet Name="appmailbccs_ibfk_1" Association="Self.appmailbccs_ibfk_1">
+            <End Role="appmails" EntitySet="appmails" />
+            <End Role="appmailbccs" EntitySet="appmailbccs" />
+          </AssociationSet>
+          <AssociationSet Name="appmailccs_ibfk_1" Association="Self.appmailccs_ibfk_1">
+            <End Role="appmails" EntitySet="appmails" />
+            <End Role="appmailccs" EntitySet="appmailccs" />
+          </AssociationSet>
+          <AssociationSet Name="appmailrecipients_ibfk_1" Association="Self.appmailrecipients_ibfk_1">
+            <End Role="appmails" EntitySet="appmails" />
+            <End Role="appmailrecipients" EntitySet="appmailrecipients" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="mailerdaemonModelStoreContainer" CdmEntityContainer="mailerdaemonEntities">
+          <EntitySetMapping Name="applications">
+            <EntityTypeMapping TypeName="mailerdaemonModel.application">
+              <MappingFragment StoreEntitySet="applications">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="DateCreated" ColumnName="DateCreated" />
+                <ScalarProperty Name="DateLastUpdated" ColumnName="DateLastUpdated" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="ApplicationGUID" ColumnName="ApplicationGUID" />
+                <ScalarProperty Name="ApplicationKey" ColumnName="ApplicationKey" />
+                <ScalarProperty Name="MailDomain" ColumnName="MailDomain" />
+                <ScalarProperty Name="MailAddress" ColumnName="MailAddress" />
+                <ScalarProperty Name="MailUsername" ColumnName="MailUsername" />
+                <ScalarProperty Name="MailPassword" ColumnName="MailPassword" />
+                <ScalarProperty Name="MailServiceUrl" ColumnName="MailServiceUrl" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="DaemonPort" ColumnName="DaemonPort" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="appmailattachments">
+            <EntityTypeMapping TypeName="mailerdaemonModel.appmailattachment">
+              <MappingFragment StoreEntitySet="appmailattachments">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="AppMailID" ColumnName="AppMailID" />
+                <ScalarProperty Name="Filename" ColumnName="Filename" />
+                <ScalarProperty Name="Type" ColumnName="Type" />
+                <ScalarProperty Name="Size" ColumnName="Size" />
+                <ScalarProperty Name="Data" ColumnName="Data" />
+                <ScalarProperty Name="DateCreated" ColumnName="DateCreated" />
+                <ScalarProperty Name="DateLastUpdated" ColumnName="DateLastUpdated" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="appmailbccs">
+            <EntityTypeMapping TypeName="mailerdaemonModel.appmailbcc">
+              <MappingFragment StoreEntitySet="appmailbccs">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="AppMailID" ColumnName="AppMailID" />
+                <ScalarProperty Name="To" ColumnName="To" />
+                <ScalarProperty Name="DateCreated" ColumnName="DateCreated" />
+                <ScalarProperty Name="DateLastUpdated" ColumnName="DateLastUpdated" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="appmailccs">
+            <EntityTypeMapping TypeName="mailerdaemonModel.appmailcc">
+              <MappingFragment StoreEntitySet="appmailccs">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="AppMailID" ColumnName="AppMailID" />
+                <ScalarProperty Name="To" ColumnName="To" />
+                <ScalarProperty Name="DateCreated" ColumnName="DateCreated" />
+                <ScalarProperty Name="DateLastUpdated" ColumnName="DateLastUpdated" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="appmailjobs">
+            <EntityTypeMapping TypeName="mailerdaemonModel.appmailjob">
+              <MappingFragment StoreEntitySet="appmailjob">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="ApplicationID" ColumnName="ApplicationID" />
+                <ScalarProperty Name="DateCreated" ColumnName="DateCreated" />
+                <ScalarProperty Name="Duration" ColumnName="Duration" />
+                <ScalarProperty Name="DateLastUpdated" ColumnName="DateLastUpdated" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="appmailrecipients">
+            <EntityTypeMapping TypeName="mailerdaemonModel.appmailrecipient">
+              <MappingFragment StoreEntitySet="appmailrecipients">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="AppMailID" ColumnName="AppMailID" />
+                <ScalarProperty Name="To" ColumnName="To" />
+                <ScalarProperty Name="DateCreated" ColumnName="DateCreated" />
+                <ScalarProperty Name="DateLastUpdated" ColumnName="DateLastUpdated" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="appmails">
+            <EntityTypeMapping TypeName="mailerdaemonModel.appmail">
+              <MappingFragment StoreEntitySet="appmails">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="ApplicationID" ColumnName="ApplicationID" />
+                <ScalarProperty Name="From" ColumnName="From" />
+                <ScalarProperty Name="Subject" ColumnName="Subject" />
+                <ScalarProperty Name="Content" ColumnName="Content" />
+                <ScalarProperty Name="Retries" ColumnName="Retries" />
+                <ScalarProperty Name="isSent" ColumnName="isSent" />
+                <ScalarProperty Name="DateCreated" ColumnName="DateCreated" />
+                <ScalarProperty Name="DateLastUpdated" ColumnName="DateLastUpdated" />
+                <ScalarProperty Name="UID" ColumnName="UID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="roles">
+            <EntityTypeMapping TypeName="mailerdaemonModel.role">
+              <MappingFragment StoreEntitySet="roles">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="DateCreated" ColumnName="DateCreated" />
+                <ScalarProperty Name="DateLastUpdate" ColumnName="DateLastUpdate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="users">
+            <EntityTypeMapping TypeName="mailerdaemonModel.user">
+              <MappingFragment StoreEntitySet="users">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="Username" ColumnName="Username" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="Fullname" ColumnName="Fullname" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="RoleID" ColumnName="RoleID" />
+                <ScalarProperty Name="SID" ColumnName="SID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="true" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

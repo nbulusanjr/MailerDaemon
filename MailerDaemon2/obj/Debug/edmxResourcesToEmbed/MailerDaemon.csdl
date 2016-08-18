@@ -8,6 +8,7 @@
     <EntitySet Name="appmailjobs" EntityType="MailerDaemonModel.appmailjob" />
     <EntitySet Name="appmailrecipients" EntityType="MailerDaemonModel.appmailrecipient" />
     <EntitySet Name="appmails" EntityType="MailerDaemonModel.appmail" />
+    <EntitySet Name="roles" EntityType="MailerDaemonModel.role" />
     <EntitySet Name="users" EntityType="MailerDaemonModel.user" />
     <AssociationSet Name="appmailattachments_ibfk_1" Association="MailerDaemonModel.appmailattachments_ibfk_1">
       <End Role="appmail" EntitySet="appmails" />
@@ -43,6 +44,7 @@
     <Property Name="MailPassword" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
     <Property Name="MailServiceUrl" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
     <Property Name="IsActive" Type="Int32" Nullable="false" />
+    <Property Name="DaemonPort" Type="Int32" Nullable="false" />
   </EntityType>
   <EntityType Name="appmailattachment">
     <Key>
@@ -121,6 +123,15 @@
     <NavigationProperty Name="appmailccs" Relationship="MailerDaemonModel.appmailccs_ibfk_1" FromRole="appmail" ToRole="appmailcc" />
     <NavigationProperty Name="appmailrecipients" Relationship="MailerDaemonModel.appmailrecipients_ibfk_1" FromRole="appmail" ToRole="appmailrecipient" />
   </EntityType>
+  <EntityType Name="role">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Description" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="DateCreated" Type="DateTime" Nullable="false" />
+    <Property Name="DateLastUpdate" Type="DateTime" />
+  </EntityType>
   <EntityType Name="user">
     <Key>
       <PropertyRef Name="id" />
@@ -130,6 +141,8 @@
     <Property Name="Password" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
     <Property Name="Fullname" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
     <Property Name="Email" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="RoleID" Type="Int32" Nullable="false" />
+    <Property Name="SID" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
   </EntityType>
   <Association Name="appmailattachments_ibfk_1">
     <End Type="MailerDaemonModel.appmail" Role="appmail" Multiplicity="1">

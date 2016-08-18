@@ -48,6 +48,8 @@ namespace MailerDaemon2
                 // service.Credentials = new WebCredentials(appagent.username, appagent.password);
                 service.Url = new Uri("https://smic1eexphc1.smic.sm.ph/EWS/Exchange.asmx");
 
+                //https://mail.sminvestments.com/ews/Services.wsdl
+
                 //service.UseDefaultCredentials = true;
                 //service.AutodiscoverUrl("nico.bulusan@sminvestments.com");
                 //Parallel.ForEach(m, mm => {

@@ -4,37 +4,19 @@
     <EntitySetMapping Name="applications">
       <EntityTypeMapping TypeName="mailerdaemonModel.application">
         <MappingFragment StoreEntitySet="applications">
+          <ScalarProperty Name="DaemonPort" ColumnName="DaemonPort" />
+          <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+          <ScalarProperty Name="MailServiceUrl" ColumnName="MailServiceUrl" />
+          <ScalarProperty Name="MailPassword" ColumnName="MailPassword" />
+          <ScalarProperty Name="MailUsername" ColumnName="MailUsername" />
+          <ScalarProperty Name="MailAddress" ColumnName="MailAddress" />
+          <ScalarProperty Name="MailDomain" ColumnName="MailDomain" />
+          <ScalarProperty Name="ApplicationKey" ColumnName="ApplicationKey" />
+          <ScalarProperty Name="ApplicationGUID" ColumnName="ApplicationGUID" />
+          <ScalarProperty Name="UserID" ColumnName="UserID" />
           <ScalarProperty Name="DateLastUpdated" ColumnName="DateLastUpdated" />
           <ScalarProperty Name="DateCreated" ColumnName="DateCreated" />
           <ScalarProperty Name="Description" ColumnName="Description" />
-          <ScalarProperty Name="id" ColumnName="id" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
-    <EntitySetMapping Name="appmailagentassignments">
-      <EntityTypeMapping TypeName="mailerdaemonModel.appmailagentassignment">
-        <MappingFragment StoreEntitySet="appmailagentassignment">
-          <ScalarProperty Name="DateLastUpdated" ColumnName="DateLastUpdated" />
-          <ScalarProperty Name="DateCreated" ColumnName="DateCreated" />
-          <ScalarProperty Name="AppMailAgentID" ColumnName="AppMailAgentID" />
-          <ScalarProperty Name="ApplicationID" ColumnName="ApplicationID" />
-          <ScalarProperty Name="id" ColumnName="id" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
-    <EntitySetMapping Name="appmailagents">
-      <EntityTypeMapping TypeName="mailerdaemonModel.appmailagent">
-        <MappingFragment StoreEntitySet="appmailagents">
-          <ScalarProperty Name="AppKey" ColumnName="AppKey" />
-          <ScalarProperty Name="ApplicationID" ColumnName="ApplicationID" />
-          <ScalarProperty Name="isActive" ColumnName="isActive" />
-          <ScalarProperty Name="DateLastUpdated" ColumnName="DateLastUpdated" />
-          <ScalarProperty Name="DateCreated" ColumnName="DateCreated" />
-          <ScalarProperty Name="mailingaddress" ColumnName="mailingaddress" />
-          <ScalarProperty Name="port" ColumnName="port" />
-          <ScalarProperty Name="domain" ColumnName="domain" />
-          <ScalarProperty Name="password" ColumnName="password" />
-          <ScalarProperty Name="username" ColumnName="username" />
           <ScalarProperty Name="id" ColumnName="id" />
         </MappingFragment>
       </EntityTypeMapping>
@@ -110,6 +92,29 @@
           <ScalarProperty Name="Subject" ColumnName="Subject" />
           <ScalarProperty Name="From" ColumnName="From" />
           <ScalarProperty Name="ApplicationID" ColumnName="ApplicationID" />
+          <ScalarProperty Name="id" ColumnName="id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="roles">
+      <EntityTypeMapping TypeName="mailerdaemonModel.role">
+        <MappingFragment StoreEntitySet="roles">
+          <ScalarProperty Name="DateLastUpdate" ColumnName="DateLastUpdate" />
+          <ScalarProperty Name="DateCreated" ColumnName="DateCreated" />
+          <ScalarProperty Name="Description" ColumnName="Description" />
+          <ScalarProperty Name="id" ColumnName="id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="users">
+      <EntityTypeMapping TypeName="mailerdaemonModel.user">
+        <MappingFragment StoreEntitySet="users">
+          <ScalarProperty Name="SID" ColumnName="SID" />
+          <ScalarProperty Name="RoleID" ColumnName="RoleID" />
+          <ScalarProperty Name="Email" ColumnName="Email" />
+          <ScalarProperty Name="Fullname" ColumnName="Fullname" />
+          <ScalarProperty Name="Password" ColumnName="Password" />
+          <ScalarProperty Name="Username" ColumnName="Username" />
           <ScalarProperty Name="id" ColumnName="id" />
         </MappingFragment>
       </EntityTypeMapping>

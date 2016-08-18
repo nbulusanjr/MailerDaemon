@@ -17,6 +17,7 @@
     <Property Name="MailPassword" Type="varchar" MaxLength="255" Nullable="false" />
     <Property Name="MailServiceUrl" Type="varchar" MaxLength="255" Nullable="false" />
     <Property Name="IsActive" Type="int" Nullable="false" />
+    <Property Name="DaemonPort" Type="int" Nullable="false" />
   </EntityType>
   <EntityType Name="appmailattachments">
     <Key>
@@ -87,6 +88,15 @@
     <Property Name="DateLastUpdated" Type="timestamp" Precision="0" Nullable="false" />
     <Property Name="UID" Type="varchar" MaxLength="255" />
   </EntityType>
+  <EntityType Name="roles">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Description" Type="varchar" MaxLength="255" Nullable="false" />
+    <Property Name="DateCreated" Type="datetime" Precision="0" Nullable="false" />
+    <Property Name="DateLastUpdate" Type="timestamp" Precision="0" />
+  </EntityType>
   <EntityType Name="users">
     <Key>
       <PropertyRef Name="id" />
@@ -96,6 +106,8 @@
     <Property Name="Password" Type="varchar" MaxLength="255" Nullable="false" />
     <Property Name="Fullname" Type="varchar" MaxLength="255" Nullable="false" />
     <Property Name="Email" Type="varchar" MaxLength="255" Nullable="false" />
+    <Property Name="RoleID" Type="int" Nullable="false" />
+    <Property Name="SID" Type="varchar" MaxLength="255" />
   </EntityType>
   <Association Name="appmailattachments_ibfk_1">
     <End Role="appmails" Type="Self.appmails" Multiplicity="1">
@@ -159,6 +171,7 @@
     <EntitySet Name="appmailjob" EntityType="Self.appmailjob" Schema="mailerdaemon" store:Type="Tables" />
     <EntitySet Name="appmailrecipients" EntityType="Self.appmailrecipients" Schema="mailerdaemon" store:Type="Tables" />
     <EntitySet Name="appmails" EntityType="Self.appmails" Schema="mailerdaemon" store:Type="Tables" />
+    <EntitySet Name="roles" EntityType="Self.roles" Schema="mailerdaemon" store:Type="Tables" />
     <EntitySet Name="users" EntityType="Self.users" Schema="mailerdaemon" store:Type="Tables" />
     <AssociationSet Name="appmailattachments_ibfk_1" Association="Self.appmailattachments_ibfk_1">
       <End Role="appmails" EntitySet="appmails" />

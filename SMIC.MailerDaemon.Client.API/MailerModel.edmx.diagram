@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="c8ddbfca5e494766b55219bf612b24ec" Name="Diagram1" ZoomLevel="86">
+        <EntityTypeShape EntityType="mailerdaemonModel.application" Width="1.5" PointX="5.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="mailerdaemonModel.appmailattachment" Width="1.5" PointX="3" PointY="1.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="mailerdaemonModel.appmailbcc" Width="1.5" PointX="3" PointY="4.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="mailerdaemonModel.appmailcc" Width="1.5" PointX="3" PointY="7.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="mailerdaemonModel.appmailjob" Width="1.5" PointX="5.75" PointY="5.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="mailerdaemonModel.appmailrecipient" Width="1.5" PointX="3" PointY="10.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="mailerdaemonModel.appmail" Width="1.5" PointX="0.75" PointY="5.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="mailerdaemonModel.role" Width="1.5" PointX="7.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="mailerdaemonModel.user" Width="1.5" PointX="7.75" PointY="3.75" IsExpanded="true" />
+        <AssociationConnector Association="mailerdaemonModel.appmailattachments_ibfk_1" ManuallyRouted="false" />
+        <AssociationConnector Association="mailerdaemonModel.appmailbccs_ibfk_1" ManuallyRouted="false" />
+        <AssociationConnector Association="mailerdaemonModel.appmailccs_ibfk_1" ManuallyRouted="false" />
+        <AssociationConnector Association="mailerdaemonModel.appmailrecipients_ibfk_1" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

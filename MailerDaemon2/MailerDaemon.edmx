@@ -22,6 +22,7 @@
           <Property Name="MailPassword" Type="varchar" MaxLength="255" Nullable="false" />
           <Property Name="MailServiceUrl" Type="varchar" MaxLength="255" Nullable="false" />
           <Property Name="IsActive" Type="int" Nullable="false" />
+          <Property Name="DaemonPort" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="appmailattachments">
           <Key>
@@ -92,6 +93,15 @@
           <Property Name="DateLastUpdated" Type="timestamp" Precision="0" Nullable="false" />
           <Property Name="UID" Type="varchar" MaxLength="255" />
         </EntityType>
+        <EntityType Name="roles">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Description" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="DateCreated" Type="datetime" Precision="0" Nullable="false" />
+          <Property Name="DateLastUpdate" Type="timestamp" Precision="0" />
+        </EntityType>
         <EntityType Name="users">
           <Key>
             <PropertyRef Name="id" />
@@ -101,6 +111,8 @@
           <Property Name="Password" Type="varchar" MaxLength="255" Nullable="false" />
           <Property Name="Fullname" Type="varchar" MaxLength="255" Nullable="false" />
           <Property Name="Email" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="RoleID" Type="int" Nullable="false" />
+          <Property Name="SID" Type="varchar" MaxLength="255" />
         </EntityType>
         <Association Name="appmailattachments_ibfk_1">
           <End Role="appmails" Type="Self.appmails" Multiplicity="1">
@@ -164,6 +176,7 @@
           <EntitySet Name="appmailjob" EntityType="Self.appmailjob" Schema="mailerdaemon" store:Type="Tables" />
           <EntitySet Name="appmailrecipients" EntityType="Self.appmailrecipients" Schema="mailerdaemon" store:Type="Tables" />
           <EntitySet Name="appmails" EntityType="Self.appmails" Schema="mailerdaemon" store:Type="Tables" />
+          <EntitySet Name="roles" EntityType="Self.roles" Schema="mailerdaemon" store:Type="Tables" />
           <EntitySet Name="users" EntityType="Self.users" Schema="mailerdaemon" store:Type="Tables" />
           <AssociationSet Name="appmailattachments_ibfk_1" Association="Self.appmailattachments_ibfk_1">
             <End Role="appmails" EntitySet="appmails" />
@@ -194,6 +207,7 @@
           <EntitySet Name="appmailjobs" EntityType="MailerDaemonModel.appmailjob" />
           <EntitySet Name="appmailrecipients" EntityType="MailerDaemonModel.appmailrecipient" />
           <EntitySet Name="appmails" EntityType="MailerDaemonModel.appmail" />
+          <EntitySet Name="roles" EntityType="MailerDaemonModel.role" />
           <EntitySet Name="users" EntityType="MailerDaemonModel.user" />
           <AssociationSet Name="appmailattachments_ibfk_1" Association="MailerDaemonModel.appmailattachments_ibfk_1">
             <End Role="appmail" EntitySet="appmails" />
@@ -229,6 +243,7 @@
           <Property Name="MailPassword" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
           <Property Name="MailServiceUrl" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
           <Property Name="IsActive" Type="Int32" Nullable="false" />
+          <Property Name="DaemonPort" Type="Int32" Nullable="false" />
         </EntityType>
         <EntityType Name="appmailattachment">
           <Key>
@@ -307,6 +322,15 @@
           <NavigationProperty Name="appmailccs" Relationship="MailerDaemonModel.appmailccs_ibfk_1" FromRole="appmail" ToRole="appmailcc" />
           <NavigationProperty Name="appmailrecipients" Relationship="MailerDaemonModel.appmailrecipients_ibfk_1" FromRole="appmail" ToRole="appmailrecipient" />
         </EntityType>
+        <EntityType Name="role">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Description" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="DateCreated" Type="DateTime" Nullable="false" />
+          <Property Name="DateLastUpdate" Type="DateTime" />
+        </EntityType>
         <EntityType Name="user">
           <Key>
             <PropertyRef Name="id" />
@@ -316,6 +340,8 @@
           <Property Name="Password" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
           <Property Name="Fullname" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
           <Property Name="Email" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="RoleID" Type="Int32" Nullable="false" />
+          <Property Name="SID" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
         </EntityType>
         <Association Name="appmailattachments_ibfk_1">
           <End Type="MailerDaemonModel.appmail" Role="appmail" Multiplicity="1">
@@ -380,6 +406,7 @@
           <EntitySetMapping Name="applications">
             <EntityTypeMapping TypeName="MailerDaemonModel.application">
               <MappingFragment StoreEntitySet="applications">
+                <ScalarProperty Name="DaemonPort" ColumnName="DaemonPort" />
                 <ScalarProperty Name="IsActive" ColumnName="IsActive" />
                 <ScalarProperty Name="MailServiceUrl" ColumnName="MailServiceUrl" />
                 <ScalarProperty Name="MailPassword" ColumnName="MailPassword" />
@@ -471,9 +498,21 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="roles">
+            <EntityTypeMapping TypeName="MailerDaemonModel.role">
+              <MappingFragment StoreEntitySet="roles">
+                <ScalarProperty Name="DateLastUpdate" ColumnName="DateLastUpdate" />
+                <ScalarProperty Name="DateCreated" ColumnName="DateCreated" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="users">
             <EntityTypeMapping TypeName="MailerDaemonModel.user">
               <MappingFragment StoreEntitySet="users">
+                <ScalarProperty Name="SID" ColumnName="SID" />
+                <ScalarProperty Name="RoleID" ColumnName="RoleID" />
                 <ScalarProperty Name="Email" ColumnName="Email" />
                 <ScalarProperty Name="Fullname" ColumnName="Fullname" />
                 <ScalarProperty Name="Password" ColumnName="Password" />

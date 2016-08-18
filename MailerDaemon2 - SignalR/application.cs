@@ -18,5 +18,15 @@ namespace MailerDaemon2
         public string Description { get; set; }
         public System.DateTime DateCreated { get; set; }
         public Nullable<System.DateTime> DateLastUpdated { get; set; }
+        public int UserID { get; set; }
+        public string ApplicationGUID { get; set; }
+        public string ApplicationKey { get; set; }
+        public string MailDomain { get; set; }
+        public string MailAddress { get; set; }
+        public string MailUsername { get; set; }
+        public string MailPassword { get; set; }
+        public string MailServiceUrl { get; set; }
+        public int IsActive { get; set; }
+        public int DaemonPort { get; set; }
     }
 }

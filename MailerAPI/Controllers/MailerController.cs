@@ -4,17 +4,20 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
-using MailerAPI.Models;
+//using MailerAPI.Models;
 using MailerAPI.Filter;
-
+using SMIC.MailerDaemon.Client.API;
+using MailerAPI.Models;
+using Microsoft.Exchange.WebServices.Data;
+using System.Collections.ObjectModel;
 
 
 
 namespace MailerAPI.Controllers
 {
 
-    
-   // [RoutePrefix("api/mailer")]
+
+    // [RoutePrefix("api/mailer")]
     public class MailerController : ApiController
     {
         // GET api/mailer
@@ -30,9 +33,9 @@ namespace MailerAPI.Controllers
         }
 
         // POST api/mailer
-      //  public void Post([FromBody]string value)
-       // {
-       // }
+        //  public void Post([FromBody]string value)
+        // {
+        // }
 
         // PUT api/mailer/5
         public void Put(int id, [FromBody]string value)
@@ -45,102 +48,217 @@ namespace MailerAPI.Controllers
         }
         // public string Post(MailerAPI.Models.appmail AppMail)
 
-        [HMACAuthentication]
-        public IHttpActionResult Post(MailerAPI.Models.appmail AppMail)
+        //[HMACAuthentication]
+        public IHttpActionResult Post(Mails mails)
         {
 
-            try {
 
-                using (mailerdaemonEntities2 db = new mailerdaemonEntities2())
+            try
+            {
+
+                using (mailerdaemonEntities db = new mailerdaemonEntities())
                 {
                     using (var transaction = db.Database.BeginTransaction())
                     {
                         try
                         {
-                            db.appmails.Add(AppMail);
+                            var appClient = db.applications.Where(x => x.ApplicationGUID == mails.ApplicationGUID).FirstOrDefault();
+
+                            appmail mail = new appmail();
+                            mail.ApplicationID = appClient.id;
+                            mail.Content = mails.Content;
+                            mail.DateCreated = DateTime.Now;
+                            mail.DateLastUpdated = DateTime.Now;
+                            mail.From = mails.From;
+                            mail.Subject = mails.Subject;
+
+                            db.appmails.Add(mail);
                             db.SaveChanges();
 
-                            List<MailerAPI.Models.appmailrecipient> recipients = AppMail.appmailrecipients.ToList();
-
-                            if (recipients.Count == 0)
+                            if (mails.To != null)
                             {
-                                throw new Exception("Mail Recipient is required!");
-                            }
 
-                            foreach (var y in recipients)
-                            {
-                                ValidatorTool.CustomValidator cv = new ValidatorTool.CustomValidator();
-
-                                if (!cv.IsEmail(y.To))
+                                foreach (var z in mails.To)
                                 {
-                                    throw new Exception("Invalid email address: " + y.To);
+
+
+                                    ValidatorTool.CustomValidator cv = new ValidatorTool.CustomValidator();
+
+                                    if (!cv.IsEmail(z))
+                                    {
+                                       // throw new Exception("Invalid email address: " + z);
+
+                                        Exception emEx = new Exception("EmailID :" + mail.id + Environment.NewLine + "Invalid email address (Recipient): " + z);
+
+                                        Elmah.ErrorSignal.FromCurrentContext().Raise(emEx);
+
+                                    }
+
+                                    appmailrecipient recipient = new appmailrecipient();
+                                    recipient.AppMailID = mail.id;
+                                    recipient.DateCreated = DateTime.Now;
+                                    recipient.DateLastUpdated = DateTime.Now;
+                                    recipient.To = z;
+
+                                    db.appmailrecipients.Add(recipient);
+                                    db.SaveChanges();
                                 }
 
-                                y.AppMailID = AppMail.id;
-                                
+
                             }
+
+                            if (mails.Cc != null)
+                            {
+
+                                foreach (var z in mails.Cc)
+                                {
+
+                                    ValidatorTool.CustomValidator cv = new ValidatorTool.CustomValidator();
+
+                                    if (!cv.IsEmail(z))
+                                    {
+                                       // throw new Exception("Invalid email address: " + z);
+                                        Exception emEx = new Exception("EmailID :" + mail.id + Environment.NewLine + "Invalid email address (CC): " + z);
+
+                                        Elmah.ErrorSignal.FromCurrentContext().Raise(emEx);
+                                    }
+
+                                    appmailcc cc = new appmailcc();
+                                    cc.AppMailID = mail.id;
+                                    cc.DateCreated = DateTime.Now;
+                                    cc.DateLastUpdated = DateTime.Now;
+                                    cc.To = z;
+
+                                    db.appmailccs.Add(cc);
+                                    db.SaveChanges();
+
+
+                                }
+
+                            }
+
+                            if (mails.Bcc != null)
+                            {
+                                foreach (var z in mails.Bcc)
+                                {
+
+                                    ValidatorTool.CustomValidator cv = new ValidatorTool.CustomValidator();
+
+                                    if (!cv.IsEmail(z))
+                                    {
+                                       // throw new Exception("Invalid email address: " + z);
+                                        Exception emEx = new Exception("EmailID :" + mail.id + Environment.NewLine + "Invalid email address (BCC): " + z);
+
+                                        Elmah.ErrorSignal.FromCurrentContext().Raise(emEx);
+                                    }
+
+                                    appmailbcc bcc = new appmailbcc();
+                                    bcc.AppMailID = mail.id;
+                                    bcc.DateCreated = DateTime.Now;
+                                    bcc.DateLastUpdated = DateTime.Now;
+                                    bcc.To = z;
+
+                                    db.appmailbccs.Add(bcc);
+                                    db.SaveChanges();
+
+
+                                }
+                            }
+
+
+
+
+
+                            List<Mails> m = new List<Mails>();
+                            m.Add(mails);
+                                                      
+
+                            ExchangeService service = new ExchangeService(ExchangeVersion.Exchange2010_SP1);
+                            service.Credentials = new NetworkCredential(appClient.MailUsername,appClient.MailPassword, appClient.MailDomain);
+                            // service.Credentials = new WebCredentials(appagent.username, appagent.password);
+                            service.Url = new Uri(appClient.MailServiceUrl);
+
+                            //https://mail.sminvestments.com/ews/Services.wsdl
 
                             
-                       
-                            db.appmailrecipients.AddRange(recipients);
-                            db.SaveChanges();
+                            Collection<EmailMessage> messageItems = new Collection<EmailMessage>();
 
-
-                            List<MailerAPI.Models.appmailcc> ccs = AppMail.appmailccs.ToList();
-
-                            if (ccs.Count > 0)
+                            foreach (Mails mm in m)
                             {
-                                foreach (var y in ccs)
+                                EmailMessage newmessage = new EmailMessage(service);
+                                newmessage.Body = mm.Content;
+                                newmessage.Subject = mm.Subject;
+                                newmessage.Body.BodyType = BodyType.HTML;
+                                newmessage.Importance = Importance.High;
+                                /// ADD MULTIPLE RECIPIENTS
+                                /// 
+                                if (mm.To != null)
                                 {
-
-                                    ValidatorTool.CustomValidator cv = new ValidatorTool.CustomValidator();
-                                    if (!cv.IsEmail(y.To))
+                                    foreach (string r in mm.To)
                                     {
-                                        throw new Exception("Invalid email address: " + y.To);
+                                        newmessage.ToRecipients.Add(r);
                                     }
-                                    y.AppMailID = AppMail.id;
                                 }
 
-                                db.appmailccs.AddRange(ccs);
-                                db.SaveChanges();
-                            }
-
-
-
-                            List<MailerAPI.Models.appmailbcc> bccs = AppMail.appmailbccs.ToList();
-                            if (bccs.Count > 0)
-                            {
-                                foreach (var y in bccs)
+                                /// ADD CC RECIPIENTS
+                                /// 
+                                if (mm.Cc != null)
                                 {
-                                    
-                                    ValidatorTool.CustomValidator cv = new ValidatorTool.CustomValidator();
-                                    if (!cv.IsEmail(y.To))
+                                    foreach (string c in mm.Cc)
                                     {
-                                        throw new Exception("Invalid email address: " + y.To);
+                                        newmessage.CcRecipients.Add(c);
                                     }
-
-                                    y.AppMailID = AppMail.id;
                                 }
 
-                                db.appmailbccs.AddRange(bccs);
-                                db.SaveChanges();
-                            }
 
-
-
-                            List<MailerAPI.Models.appmailattachment> attachments = AppMail.appmailattachments.ToList();
-                            if (attachments.Count > 0)
-                            {
-                                foreach (var y in attachments)
+                                /// ADD BCC RECIPIENTS
+                                /// 
+                                if (mm.Bcc != null)
                                 {
-                                    y.AppMailID = AppMail.id;
+                                    foreach (string b in mm.Bcc)
+                                    {
+                                        newmessage.BccRecipients.Add(b);
+                                    }
                                 }
-                                db.appmailattachments.AddRange(attachments);
+
+                                /// ADD MULTIPLE ATTACHMENTS
+                                /// 
+                                if (mm.Attachments != null)
+                                {
+                                    foreach (MailAttachment amt in mm.Attachments)
+                                    {
+                                        newmessage.Attachments.AddFileAttachment(amt.Filename, amt.Data);
+                                    }
+                                }
+
+
+
+                                // Create a custom extended property and add it to the message. 
+                                Guid myPropertySetId = new Guid("{20B5C09F-7CAD-44c6-BDBF-8FCBEEA08544}");
+                                Guid g;
+                                g = Guid.NewGuid();
+
+                                ExtendedPropertyDefinition myExtendedPropertyDefinition = new ExtendedPropertyDefinition(myPropertySetId, "UUID", MapiPropertyType.String);
+                                newmessage.SetExtendedProperty(myExtendedPropertyDefinition, g.ToString());
+                                newmessage.IsDeliveryReceiptRequested = true;
+
+                               
+                                mail.UID = g.ToString();
+                                mail.isSent = 1;
                                 db.SaveChanges();
+
+                                messageItems.Add(newmessage);
                             }
-                           
+                            ServiceResponseCollection<ServiceResponse> response = service.CreateItems(messageItems, WellKnownFolderName.SentItems, MessageDisposition.SendAndSaveCopy, null);
+
+
+
 
                             transaction.Commit();
+
+
+
+
 
                         }
                         catch (Exception ex1)
@@ -156,17 +274,20 @@ namespace MailerAPI.Controllers
                 }
 
 
-               
+
 
                 var result = new
                 {
-                    Status="OK"
+                    Result = "OK"
                 };
+
+
+
 
 
                 return Ok(result);
 
-              //  return Newtonsoft.Json.JsonConvert.SerializeObject(result);
+                //  return Newtonsoft.Json.JsonConvert.SerializeObject(result);
 
 
             }
@@ -176,18 +297,23 @@ namespace MailerAPI.Controllers
 
                 var result = new
                 {
-                    Status = "ERROR",
+                    Result = "ERROR",
                     Message = e.Message
                 };
 
+
+                Elmah.ErrorSignal.FromCurrentContext().Raise(ex);
+
+                //return Content(HttpStatusCode.InternalServerError, result);
+
                 return Ok(result);
-               // return Newtonsoft.Json.JsonConvert.SerializeObject(result);
+                // return Newtonsoft.Json.JsonConvert.SerializeObject(result);
 
             }
 
-        
-           
-            
+
+
+
         }
     }
 }

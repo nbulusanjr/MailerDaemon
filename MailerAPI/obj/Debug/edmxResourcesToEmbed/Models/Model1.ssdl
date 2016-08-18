@@ -7,33 +7,17 @@
     <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="Description" Type="varchar" MaxLength="255" Nullable="false" />
     <Property Name="DateCreated" Type="datetime" Precision="0" Nullable="false" />
-    <Property Name="DateLastUpdated" Type="timestamp" Precision="0" StoreGeneratedPattern="Identity" />
-  </EntityType>
-  <EntityType Name="appmailagentassignment">
-    <Key>
-      <PropertyRef Name="id" />
-    </Key>
-    <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-    <Property Name="ApplicationID" Type="int" Nullable="false" />
-    <Property Name="AppMailAgentID" Type="int" Nullable="false" />
-    <Property Name="DateCreated" Type="datetime" Precision="0" Nullable="false" />
-    <Property Name="DateLastUpdated" Type="timestamp" Precision="0" StoreGeneratedPattern="Identity" Nullable="false" />
-  </EntityType>
-  <EntityType Name="appmailagents">
-    <Key>
-      <PropertyRef Name="id" />
-    </Key>
-    <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-    <Property Name="username" Type="varchar" MaxLength="255" Nullable="false" />
-    <Property Name="password" Type="varchar" MaxLength="255" Nullable="false" />
-    <Property Name="domain" Type="varchar" MaxLength="255" Nullable="false" />
-    <Property Name="port" Type="int" Nullable="false" />
-    <Property Name="mailingaddress" Type="varchar" MaxLength="255" />
-    <Property Name="DateCreated" Type="datetime" Precision="0" Nullable="false" />
-    <Property Name="DateLastUpdated" Type="timestamp" Precision="0" StoreGeneratedPattern="Identity" Nullable="false" />
-    <Property Name="isActive" Type="int" Nullable="false" />
-    <Property Name="ApplicationID" Type="varchar" MaxLength="255" />
-    <Property Name="AppKey" Type="varchar" MaxLength="255" />
+    <Property Name="DateLastUpdated" Type="timestamp" Precision="0" />
+    <Property Name="UserID" Type="int" Nullable="false" />
+    <Property Name="ApplicationGUID" Type="varchar" MaxLength="255" Nullable="false" />
+    <Property Name="ApplicationKey" Type="varchar" MaxLength="255" Nullable="false" />
+    <Property Name="MailDomain" Type="varchar" MaxLength="255" Nullable="false" />
+    <Property Name="MailAddress" Type="varchar" MaxLength="255" Nullable="false" />
+    <Property Name="MailUsername" Type="varchar" MaxLength="255" Nullable="false" />
+    <Property Name="MailPassword" Type="varchar" MaxLength="255" Nullable="false" />
+    <Property Name="MailServiceUrl" Type="varchar" MaxLength="255" Nullable="false" />
+    <Property Name="IsActive" Type="int" Nullable="false" />
+    <Property Name="DaemonPort" Type="int" Nullable="false" />
   </EntityType>
   <EntityType Name="appmailattachments">
     <Key>
@@ -46,7 +30,7 @@
     <Property Name="Size" Type="double" />
     <Property Name="Data" Type="longblob" />
     <Property Name="DateCreated" Type="datetime" Precision="0" Nullable="false" />
-    <Property Name="DateLastUpdated" Type="timestamp" Precision="0" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="DateLastUpdated" Type="timestamp" Precision="0" Nullable="false" />
   </EntityType>
   <EntityType Name="appmailbccs">
     <Key>
@@ -56,7 +40,7 @@
     <Property Name="AppMailID" Type="int" Nullable="false" />
     <Property Name="To" Type="varchar" MaxLength="255" Nullable="false" />
     <Property Name="DateCreated" Type="datetime" Precision="0" Nullable="false" />
-    <Property Name="DateLastUpdated" Type="timestamp" Precision="0" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="DateLastUpdated" Type="timestamp" Precision="0" Nullable="false" />
   </EntityType>
   <EntityType Name="appmailccs">
     <Key>
@@ -66,7 +50,7 @@
     <Property Name="AppMailID" Type="int" Nullable="false" />
     <Property Name="To" Type="varchar" MaxLength="255" Nullable="false" />
     <Property Name="DateCreated" Type="datetime" Precision="0" Nullable="false" />
-    <Property Name="DateLastUpdated" Type="timestamp" Precision="0" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="DateLastUpdated" Type="timestamp" Precision="0" Nullable="false" />
   </EntityType>
   <EntityType Name="appmailjob">
     <Key>
@@ -76,7 +60,7 @@
     <Property Name="ApplicationID" Type="varchar" MaxLength="11" Nullable="false" />
     <Property Name="DateCreated" Type="datetime" Precision="0" Nullable="false" />
     <Property Name="Duration" Type="bigint" Nullable="false" />
-    <Property Name="DateLastUpdated" Type="timestamp" Precision="0" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="DateLastUpdated" Type="timestamp" Precision="0" Nullable="false" />
     <Property Name="Status" Type="int" Nullable="false" />
   </EntityType>
   <EntityType Name="appmailrecipients">
@@ -87,7 +71,7 @@
     <Property Name="AppMailID" Type="int" Nullable="false" />
     <Property Name="To" Type="varchar" MaxLength="255" Nullable="false" />
     <Property Name="DateCreated" Type="datetime" Precision="0" Nullable="false" />
-    <Property Name="DateLastUpdated" Type="timestamp" Precision="0" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="DateLastUpdated" Type="timestamp" Precision="0" Nullable="false" />
   </EntityType>
   <EntityType Name="appmails">
     <Key>
@@ -101,8 +85,29 @@
     <Property Name="Retries" Type="int" Nullable="false" />
     <Property Name="isSent" Type="int" Nullable="false" />
     <Property Name="DateCreated" Type="datetime" Precision="0" Nullable="false" />
-    <Property Name="DateLastUpdated" Type="timestamp" Precision="0" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="DateLastUpdated" Type="timestamp" Precision="0" Nullable="false" />
     <Property Name="UID" Type="varchar" MaxLength="255" />
+  </EntityType>
+  <EntityType Name="roles">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Description" Type="varchar" MaxLength="255" Nullable="false" />
+    <Property Name="DateCreated" Type="datetime" Precision="0" Nullable="false" />
+    <Property Name="DateLastUpdate" Type="timestamp" Precision="0" />
+  </EntityType>
+  <EntityType Name="users">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Username" Type="varchar" MaxLength="255" Nullable="false" />
+    <Property Name="Password" Type="varchar" MaxLength="255" Nullable="false" />
+    <Property Name="Fullname" Type="varchar" MaxLength="255" Nullable="false" />
+    <Property Name="Email" Type="varchar" MaxLength="255" Nullable="false" />
+    <Property Name="RoleID" Type="int" Nullable="false" />
+    <Property Name="SID" Type="varchar" MaxLength="255" />
   </EntityType>
   <Association Name="appmailattachments_ibfk_1">
     <End Role="appmails" Type="Self.appmails" Multiplicity="1">
@@ -160,14 +165,14 @@
   </Association>
   <EntityContainer Name="mailerdaemonModelStoreContainer">
     <EntitySet Name="applications" EntityType="Self.applications" Schema="mailerdaemon" store:Type="Tables" />
-    <EntitySet Name="appmailagentassignment" EntityType="Self.appmailagentassignment" Schema="mailerdaemon" store:Type="Tables" />
-    <EntitySet Name="appmailagents" EntityType="Self.appmailagents" Schema="mailerdaemon" store:Type="Tables" />
     <EntitySet Name="appmailattachments" EntityType="Self.appmailattachments" Schema="mailerdaemon" store:Type="Tables" />
     <EntitySet Name="appmailbccs" EntityType="Self.appmailbccs" Schema="mailerdaemon" store:Type="Tables" />
     <EntitySet Name="appmailccs" EntityType="Self.appmailccs" Schema="mailerdaemon" store:Type="Tables" />
     <EntitySet Name="appmailjob" EntityType="Self.appmailjob" Schema="mailerdaemon" store:Type="Tables" />
     <EntitySet Name="appmailrecipients" EntityType="Self.appmailrecipients" Schema="mailerdaemon" store:Type="Tables" />
     <EntitySet Name="appmails" EntityType="Self.appmails" Schema="mailerdaemon" store:Type="Tables" />
+    <EntitySet Name="roles" EntityType="Self.roles" Schema="mailerdaemon" store:Type="Tables" />
+    <EntitySet Name="users" EntityType="Self.users" Schema="mailerdaemon" store:Type="Tables" />
     <AssociationSet Name="appmailattachments_ibfk_1" Association="Self.appmailattachments_ibfk_1">
       <End Role="appmails" EntitySet="appmails" />
       <End Role="appmailattachments" EntitySet="appmailattachments" />

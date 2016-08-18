@@ -5,15 +5,19 @@
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
       <Diagram DiagramId="36a1e72904b6459cbc40bc4481fd2ecb" Name="Diagram1">
-        <EntityTypeShape EntityType="MailerDaemonModel.application" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="MailerDaemonModel.appmailagentassignment" Width="1.5" PointX="2.75" PointY="0.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="MailerDaemonModel.appmailagent" Width="1.5" PointX="0.75" PointY="3.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="MailerDaemonModel.appmailattachment" Width="1.5" PointX="2.75" PointY="3.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="MailerDaemonModel.appmailbcc" Width="1.5" PointX="4.75" PointY="0.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="MailerDaemonModel.appmailcc" Width="1.5" PointX="4.75" PointY="3.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="MailerDaemonModel.appmailjob" Width="1.5" PointX="6.75" PointY="0.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="MailerDaemonModel.appmailrecipient" Width="1.5" PointX="6.75" PointY="3.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="MailerDaemonModel.appmail" Width="1.5" PointX="4.75" PointY="6.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="MailerDaemonModel.application" Width="1.5" PointX="5.75" PointY="0.75" />
+        <EntityTypeShape EntityType="MailerDaemonModel.appmailattachment" Width="1.5" PointX="3" PointY="4.375" />
+        <EntityTypeShape EntityType="MailerDaemonModel.appmailbcc" Width="1.5" PointX="3" PointY="7.875" />
+        <EntityTypeShape EntityType="MailerDaemonModel.appmailcc" Width="1.5" PointX="3" PointY="10.75" />
+        <EntityTypeShape EntityType="MailerDaemonModel.appmailjob" Width="1.5" PointX="5.75" PointY="5.75" />
+        <EntityTypeShape EntityType="MailerDaemonModel.appmailrecipient" Width="1.5" PointX="3" PointY="1.375" />
+        <EntityTypeShape EntityType="MailerDaemonModel.appmail" Width="1.5" PointX="0.75" PointY="5.25" />
+        <EntityTypeShape EntityType="MailerDaemonModel.role" Width="1.5" PointX="7.75" PointY="0.75" />
+        <EntityTypeShape EntityType="MailerDaemonModel.user" Width="1.5" PointX="7.75" PointY="3.75" />
+        <AssociationConnector Association="MailerDaemonModel.appmailattachments_ibfk_1" />
+        <AssociationConnector Association="MailerDaemonModel.appmailbccs_ibfk_1" />
+        <AssociationConnector Association="MailerDaemonModel.appmailccs_ibfk_1" />
+        <AssociationConnector Association="MailerDaemonModel.appmailrecipients_ibfk_1" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

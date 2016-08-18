@@ -9,11 +9,19 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MailerGUI", "MailerGUI\Mail
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MailerAPI", "MailerAPI\MailerAPI.csproj", "{0593C0CF-B20A-4366-BCD0-536CC0001628}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ValidatorTool", "ValidatorTool\ValidatorTool.csproj", "{6F78CE93-E554-48AB-9090-26BB22857227}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Typemock", "Typemock", "{D95AAF48-C638-4AB3-960E-489A07E44E61}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ValidatorToolUnitTest", "Typemock\ValidatorToolUnitTest\ValidatorToolUnitTest.csproj", "{3DBD8D3B-4D70-4B6F-B46D-46B00A165DC8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SMIC.MailerDaemon.Client.API", "SMIC.MailerDaemon.Client.API\SMIC.MailerDaemon.Client.API.csproj", "{D3E6D524-B542-4F41-8CBF-79AF64D56A15}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HMACTestConsole", "HMACTestConsole\HMACTestConsole.csproj", "{0E05C919-CB6C-4526-84A1-D0D9D1CF0983}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ValidatorTool", "ValidatorTool\ValidatorTool.csproj", "{6F78CE93-E554-48AB-9090-26BB22857227}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MailerDaemon2 - SignalR", "MailerDaemon2 - SignalR\MailerDaemon2 - SignalR.csproj", "{671B2542-3B56-4C56-B9BE-27D49753F598}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestEmailNonOutlook", "TestEmailNonOutlook\TestEmailNonOutlook.csproj", "{4A25816B-F390-4F32-A5F2-F3B338E266B7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,14 +41,30 @@ Global
 		{0593C0CF-B20A-4366-BCD0-536CC0001628}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0593C0CF-B20A-4366-BCD0-536CC0001628}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0593C0CF-B20A-4366-BCD0-536CC0001628}.Release|Any CPU.Build.0 = Release|Any CPU
-		{6F78CE93-E554-48AB-9090-26BB22857227}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{6F78CE93-E554-48AB-9090-26BB22857227}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{6F78CE93-E554-48AB-9090-26BB22857227}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{6F78CE93-E554-48AB-9090-26BB22857227}.Release|Any CPU.Build.0 = Release|Any CPU
 		{3DBD8D3B-4D70-4B6F-B46D-46B00A165DC8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{3DBD8D3B-4D70-4B6F-B46D-46B00A165DC8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3DBD8D3B-4D70-4B6F-B46D-46B00A165DC8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3DBD8D3B-4D70-4B6F-B46D-46B00A165DC8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D3E6D524-B542-4F41-8CBF-79AF64D56A15}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D3E6D524-B542-4F41-8CBF-79AF64D56A15}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D3E6D524-B542-4F41-8CBF-79AF64D56A15}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D3E6D524-B542-4F41-8CBF-79AF64D56A15}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0E05C919-CB6C-4526-84A1-D0D9D1CF0983}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0E05C919-CB6C-4526-84A1-D0D9D1CF0983}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0E05C919-CB6C-4526-84A1-D0D9D1CF0983}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0E05C919-CB6C-4526-84A1-D0D9D1CF0983}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6F78CE93-E554-48AB-9090-26BB22857227}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6F78CE93-E554-48AB-9090-26BB22857227}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6F78CE93-E554-48AB-9090-26BB22857227}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6F78CE93-E554-48AB-9090-26BB22857227}.Release|Any CPU.Build.0 = Release|Any CPU
+		{671B2542-3B56-4C56-B9BE-27D49753F598}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{671B2542-3B56-4C56-B9BE-27D49753F598}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{671B2542-3B56-4C56-B9BE-27D49753F598}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{671B2542-3B56-4C56-B9BE-27D49753F598}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4A25816B-F390-4F32-A5F2-F3B338E266B7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4A25816B-F390-4F32-A5F2-F3B338E266B7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4A25816B-F390-4F32-A5F2-F3B338E266B7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4A25816B-F390-4F32-A5F2-F3B338E266B7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

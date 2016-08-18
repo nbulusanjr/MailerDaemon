@@ -13,9 +13,13 @@ using System.Web;
 using System.Web.Http;
 using System.Web.Http.Filters;
 using System.Web.Http.Results;
+using SMIC.MailerDaemon.Client.API;
 
 namespace MailerAPI.Filter
 {
+    
+
+    
     public class HMACAuthenticationAttribute : Attribute, IAuthenticationFilter
     {
         private static Dictionary<string, string> allowedApps = new Dictionary<string, string>();
@@ -26,17 +30,7 @@ namespace MailerAPI.Filter
         {
             if (allowedApps.Count == 0)
             {
-                List<MailerAPI.Models.appmailagent> agents = new List<MailerAPI.Models.appmailagent>();
-                MailerAPI.Models.mailerdaemonEntities2 db = new Models.mailerdaemonEntities2();
-
-                agents = db.appmailagents.ToList();
-
-                foreach (var agent in agents)
-                {
-                    allowedApps.Add(agent.ApplicationID, agent.AppKey);
-                }
-
-               // allowedApps.Add("4d53bce03ec34c0a911182d4c228ee6c", "A93reRTUJHsCuQSHR+L3GxqOJyDmQpCgps102ciuabc=");
+                allowedApps.Add("4d53bce03ec34c0a911182d4c228ee6c", "A93reRTUJHsCuQSHR+L3GxqOJyDmQpCgps102ciuabc=");
             }
         }
 
@@ -187,7 +181,6 @@ namespace MailerAPI.Filter
         }
     }
 
-
     public class ResultWithChallenge : IHttpActionResult
     {
         private readonly string authenticationScheme = "amx";
@@ -210,6 +203,7 @@ namespace MailerAPI.Filter
             return response;
         }
     }
+
 
 
 }

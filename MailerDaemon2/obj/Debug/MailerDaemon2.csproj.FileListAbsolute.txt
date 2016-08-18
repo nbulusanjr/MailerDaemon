@@ -10,17 +10,11 @@ C:\Users\nico.bulusan\Documents\Visual Studio 2013\Projects\MailerDaemon2\Mailer
 C:\Users\nico.bulusan\Documents\Visual Studio 2013\Projects\MailerDaemon2\MailerDaemon2\obj\Debug\MailerDaemon2.exe
 C:\Users\nico.bulusan\Documents\Visual Studio 2013\Projects\MailerDaemon2\MailerDaemon2\obj\Debug\MailerDaemon2.pdb
 D:\Documents\Visual Studio 2013\Projects\MailerDaemon2\MailerDaemon2\bin\Debug\MailerDaemon2.exe.config
-D:\Documents\Visual Studio 2013\Projects\MailerDaemon2\MailerDaemon2\obj\Debug\MailerDaemon2.exe
-D:\Documents\Visual Studio 2013\Projects\MailerDaemon2\MailerDaemon2\obj\Debug\MailerDaemon2.pdb
 D:\Documents\Visual Studio 2013\Projects\MailerDaemon2\MailerDaemon2\bin\Debug\MailerDaemon2.exe
 D:\Documents\Visual Studio 2013\Projects\MailerDaemon2\MailerDaemon2\bin\Debug\MailerDaemon2.pdb
 D:\Documents\Visual Studio 2013\Projects\MailerDaemon2\MailerDaemon2\bin\Debug\EntityFramework.dll
-D:\Documents\Visual Studio 2013\Projects\MailerDaemon2\MailerDaemon2\bin\Debug\Microsoft.Exchange.WebServices.Auth.dll
-D:\Documents\Visual Studio 2013\Projects\MailerDaemon2\MailerDaemon2\bin\Debug\EntityFramework.xml
-D:\Documents\Visual Studio 2013\Projects\MailerDaemon2\MailerDaemon2\bin\Debug\Microsoft.Exchange.WebServices.Auth.pdb
-D:\Documents\Visual Studio 2013\Projects\MailerDaemon2\MailerDaemon2\bin\Debug\Microsoft.Exchange.WebServices.Auth.xml
-D:\Documents\Visual Studio 2013\Projects\MailerDaemon2\MailerDaemon2\obj\Debug\MailerDaemon2.csprojResolveAssemblyReference.cache
 D:\Documents\Visual Studio 2013\Projects\MailerDaemon2\MailerDaemon2\bin\Debug\Microsoft.AspNet.SignalR.Core.dll
+D:\Documents\Visual Studio 2013\Projects\MailerDaemon2\MailerDaemon2\bin\Debug\Microsoft.Exchange.WebServices.Auth.dll
 D:\Documents\Visual Studio 2013\Projects\MailerDaemon2\MailerDaemon2\bin\Debug\Microsoft.Owin.Cors.dll
 D:\Documents\Visual Studio 2013\Projects\MailerDaemon2\MailerDaemon2\bin\Debug\Microsoft.Owin.Diagnostics.dll
 D:\Documents\Visual Studio 2013\Projects\MailerDaemon2\MailerDaemon2\bin\Debug\Microsoft.Owin.dll
@@ -30,7 +24,10 @@ D:\Documents\Visual Studio 2013\Projects\MailerDaemon2\MailerDaemon2\bin\Debug\M
 D:\Documents\Visual Studio 2013\Projects\MailerDaemon2\MailerDaemon2\bin\Debug\Newtonsoft.Json.dll
 D:\Documents\Visual Studio 2013\Projects\MailerDaemon2\MailerDaemon2\bin\Debug\Owin.dll
 D:\Documents\Visual Studio 2013\Projects\MailerDaemon2\MailerDaemon2\bin\Debug\System.Web.Cors.dll
+D:\Documents\Visual Studio 2013\Projects\MailerDaemon2\MailerDaemon2\bin\Debug\EntityFramework.xml
 D:\Documents\Visual Studio 2013\Projects\MailerDaemon2\MailerDaemon2\bin\Debug\Microsoft.AspNet.SignalR.Core.xml
+D:\Documents\Visual Studio 2013\Projects\MailerDaemon2\MailerDaemon2\bin\Debug\Microsoft.Exchange.WebServices.Auth.pdb
+D:\Documents\Visual Studio 2013\Projects\MailerDaemon2\MailerDaemon2\bin\Debug\Microsoft.Exchange.WebServices.Auth.xml
 D:\Documents\Visual Studio 2013\Projects\MailerDaemon2\MailerDaemon2\bin\Debug\Microsoft.Owin.xml
 D:\Documents\Visual Studio 2013\Projects\MailerDaemon2\MailerDaemon2\bin\Debug\Microsoft.Owin.Cors.xml
 D:\Documents\Visual Studio 2013\Projects\MailerDaemon2\MailerDaemon2\bin\Debug\Microsoft.Owin.Diagnostics.xml
@@ -38,3 +35,6 @@ D:\Documents\Visual Studio 2013\Projects\MailerDaemon2\MailerDaemon2\bin\Debug\M
 D:\Documents\Visual Studio 2013\Projects\MailerDaemon2\MailerDaemon2\bin\Debug\Microsoft.Owin.Hosting.xml
 D:\Documents\Visual Studio 2013\Projects\MailerDaemon2\MailerDaemon2\bin\Debug\Microsoft.Owin.Security.xml
 D:\Documents\Visual Studio 2013\Projects\MailerDaemon2\MailerDaemon2\bin\Debug\Newtonsoft.Json.xml
+D:\Documents\Visual Studio 2013\Projects\MailerDaemon2\MailerDaemon2\obj\Debug\MailerDaemon2.csprojResolveAssemblyReference.cache
+D:\Documents\Visual Studio 2013\Projects\MailerDaemon2\MailerDaemon2\obj\Debug\MailerDaemon2.exe
+D:\Documents\Visual Studio 2013\Projects\MailerDaemon2\MailerDaemon2\obj\Debug\MailerDaemon2.pdb
