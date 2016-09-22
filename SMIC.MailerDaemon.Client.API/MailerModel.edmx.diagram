@@ -5,19 +5,30 @@
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
       <Diagram DiagramId="c8ddbfca5e494766b55219bf612b24ec" Name="Diagram1" ZoomLevel="86">
-        <EntityTypeShape EntityType="mailerdaemonModel.application" Width="1.5" PointX="5.75" PointY="0.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="mailerdaemonModel.appmailattachment" Width="1.5" PointX="3" PointY="1.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="mailerdaemonModel.appmailbcc" Width="1.5" PointX="3" PointY="4.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="mailerdaemonModel.appmailcc" Width="1.5" PointX="3" PointY="7.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="mailerdaemonModel.appmailjob" Width="1.5" PointX="5.75" PointY="5.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="mailerdaemonModel.appmailrecipient" Width="1.5" PointX="3" PointY="10.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="mailerdaemonModel.appmail" Width="1.5" PointX="0.75" PointY="5.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="mailerdaemonModel.role" Width="1.5" PointX="7.75" PointY="0.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="mailerdaemonModel.user" Width="1.5" PointX="7.75" PointY="3.75" IsExpanded="true" />
-        <AssociationConnector Association="mailerdaemonModel.appmailattachments_ibfk_1" ManuallyRouted="false" />
-        <AssociationConnector Association="mailerdaemonModel.appmailbccs_ibfk_1" ManuallyRouted="false" />
-        <AssociationConnector Association="mailerdaemonModel.appmailccs_ibfk_1" ManuallyRouted="false" />
-        <AssociationConnector Association="mailerdaemonModel.appmailrecipients_ibfk_1" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="mailerdaemonModel.application" Width="1.5" PointX="5.75" PointY="0.75" />
+        <EntityTypeShape EntityType="mailerdaemonModel.appmailattachment" Width="1.5" PointX="3" PointY="1.625" />
+        <EntityTypeShape EntityType="mailerdaemonModel.appmailbcc" Width="1.5" PointX="3" PointY="8" />
+        <EntityTypeShape EntityType="mailerdaemonModel.appmailcc" Width="1.5" PointX="3" PointY="14.375" />
+        <EntityTypeShape EntityType="mailerdaemonModel.appmailjob" Width="1.5" PointX="3" PointY="10.875" />
+        <EntityTypeShape EntityType="mailerdaemonModel.appmailrecipient" Width="1.5" PointX="3" PointY="5.125" />
+        <EntityTypeShape EntityType="mailerdaemonModel.appmail" Width="1.5" PointX="0.75" PointY="7.125" />
+        <EntityTypeShape EntityType="mailerdaemonModel.counter" Width="1.5" PointX="5.75" PointY="5.75" />
+        <EntityTypeShape EntityType="mailerdaemonModel.distributedlock" Width="1.5" PointX="7.75" PointY="0.75" />
+        <EntityTypeShape EntityType="mailerdaemonModel.hash" Width="1.5" PointX="7.75" PointY="3.75" />
+        <EntityTypeShape EntityType="mailerdaemonModel.job" Width="1.5" PointX="7.75" PointY="6.75" />
+        <EntityTypeShape EntityType="mailerdaemonModel.jobparameter" Width="1.5" PointX="9.75" PointY="0.75" />
+        <EntityTypeShape EntityType="mailerdaemonModel.jobqueue" Width="1.5" PointX="9.75" PointY="3.75" />
+        <EntityTypeShape EntityType="mailerdaemonModel.jobstate" Width="1.5" PointX="9.75" PointY="6.75" />
+        <EntityTypeShape EntityType="mailerdaemonModel.list" Width="1.5" PointX="9.75" PointY="9.75" />
+        <EntityTypeShape EntityType="mailerdaemonModel.role" Width="1.5" PointX="5.75" PointY="10.75" />
+        <EntityTypeShape EntityType="mailerdaemonModel.server" Width="1.5" PointX="11.75" PointY="0.75" />
+        <EntityTypeShape EntityType="mailerdaemonModel.set" Width="1.5" PointX="11.75" PointY="3.75" />
+        <EntityTypeShape EntityType="mailerdaemonModel.user" Width="1.5" PointX="11.75" PointY="6.75" />
+        <AssociationConnector Association="mailerdaemonModel.appmailattachments_ibfk_1" />
+        <AssociationConnector Association="mailerdaemonModel.appmailbccs_ibfk_1" />
+        <AssociationConnector Association="mailerdaemonModel.appmailccs_ibfk_1" />
+        <AssociationConnector Association="mailerdaemonModel.appmailjob_ibfk_1" />
+        <AssociationConnector Association="mailerdaemonModel.appmailrecipients_ibfk_1" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

@@ -20,5 +20,9 @@ namespace SMIC.MailerDaemon.Client.API
         public long Duration { get; set; }
         public System.DateTime DateLastUpdated { get; set; }
         public int Status { get; set; }
+        public int MailID { get; set; }
+        public string JobID { get; set; }
+    
+        public virtual appmail appmail { get; set; }
     }
 }

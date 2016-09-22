@@ -19,6 +19,7 @@ namespace SMIC.MailerDaemon.Client.API
             this.appmailattachments = new HashSet<appmailattachment>();
             this.appmailbccs = new HashSet<appmailbcc>();
             this.appmailccs = new HashSet<appmailcc>();
+            this.appmailjobs = new HashSet<appmailjob>();
             this.appmailrecipients = new HashSet<appmailrecipient>();
         }
     
@@ -36,6 +37,7 @@ namespace SMIC.MailerDaemon.Client.API
         public virtual ICollection<appmailattachment> appmailattachments { get; set; }
         public virtual ICollection<appmailbcc> appmailbccs { get; set; }
         public virtual ICollection<appmailcc> appmailccs { get; set; }
+        public virtual ICollection<appmailjob> appmailjobs { get; set; }
         public virtual ICollection<appmailrecipient> appmailrecipients { get; set; }
     }
 }

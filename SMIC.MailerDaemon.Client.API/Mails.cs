@@ -9,6 +9,7 @@ namespace SMIC.MailerDaemon.Client.API
    public class Mails
     {
        public int id { get; set; }
+       
        public string ApplicationGUID { get; set; }
 
        public string From { get; set; }

@@ -6,528 +6,780 @@ using SMIC.MailerDaemon.Client.API;
 using System.Net;
 using Microsoft.Exchange.WebServices.Data;
 using System.Collections.ObjectModel;
+using Hangfire;
 
 namespace MailerAPI.Models
 {
 
-    public  class ExchangeMailer
+    public enum JobStatus
     {
-        
-        public  MailStatus sendMailWorker(List<Mails> m, int appID, int agentID, mailerdaemonEntities db)
+        NEW = 1,
+        UPDATED = 2,
+        DELETED = 3
+    }
+
+    public class ExchangeMailer
+    {
+        /// <summary>
+        /// SEND SCHEDULED MAIL
+        /// </summary>
+        /// <param name="mailID"></param>
+        /// <param name="jobID"></param>
+        /// <returns></returns>
+        public MailResponse SendScheduledMail(int mailID, string jobID, Boolean oneTimeOnly = true)
         {
-            // Determine whether to parallelize file processing on each folder based on processor count. 
-            // int procCount = System.Environment.ProcessorCount;
-
-            ServicePointManager.ServerCertificateValidationCallback = CertificateValidationCallBack;
-            
-
-            ExchangeService service = new ExchangeService(ExchangeVersion.Exchange2010_SP1);
-            service.Credentials = new NetworkCredential("smic.onlinepr", "", "SMIC");
-            // service.Credentials = new WebCredentials(appagent.username, appagent.password);
-            service.Url = new Uri("https://smic1eexphc1.smic.sm.ph/EWS/Exchange.asmx");
-
-            //https://mail.sminvestments.com/ews/Services.wsdl
-
-            //service.UseDefaultCredentials = true;
-            //service.AutodiscoverUrl("nico.bulusan@sminvestments.com");
-            //Parallel.ForEach(m, mm => {
-            //    EmailMessage message = new EmailMessage(service);
-            //    message.Body=mm.content;
-            //    message.Subject = mm.subject;
-            //    message.Body.BodyType = BodyType.HTML;
-
-            //    /// ADD MULTIPLE RECIPIENTS
-            //    foreach (string r in mm.recipients)
-            //    {
-            //        message.ToRecipients.Add(r);
-            //    }
-            //    /// ADD BCC RECIPIENTS
-            //    foreach (string b in mm.bcc)
-            //    {
-            //        message.BccRecipients.Add(b);
-            //    }
-            //    /// ADD MULTIPLE ATTACHMENTS
-            //    foreach (AppMailAttachments amt in mm.attachments)
-            //    {
-            //         message.Attachments.AddFileAttachment(amt.Filename, amt.Data);                
-            //    }
-            //    message.Update(ConflictResolutionMode.AutoResolve);
-            //    message.Send();
-
-            //});
+            mailerdaemonEntities db = new mailerdaemonEntities();
 
 
-            ////FEATURE NOT IMPLEMENTED DUE TO
-            ////NO SUPPORT TO FILE ATTACHMENT
-            //Console.WriteLine(service.Url);
 
-            //List<EmailMessage> messages = new List<EmailMessage>();
-            Collection<EmailMessage> messageItems = new Collection<EmailMessage>();
-
-            foreach (Mails mm in m)
+            using (var transaction = db.Database.BeginTransaction())
             {
-                EmailMessage newmessage = new EmailMessage(service);
-                newmessage.Body = mm.Content;
-                newmessage.Subject = mm.Subject;
-                newmessage.Body.BodyType = BodyType.HTML;
-                newmessage.Importance = Importance.High;
-                /// ADD MULTIPLE RECIPIENTS
-                /// 
-                if (mm.To != null)
-                {
-                    foreach (string r in mm.To)
-                    {
-                        newmessage.ToRecipients.Add(r);
-                    }
-                }
 
-                /// ADD CC RECIPIENTS
-                /// 
-                if (mm.Cc != null)
-                {
-                    foreach (string c in mm.Cc)
-                    {
-                        newmessage.CcRecipients.Add(c);
-                    }
-                }
-
-
-                /// ADD BCC RECIPIENTS
-                /// 
-                if (mm.Bcc != null)
-                {
-                    foreach (string b in mm.Bcc)
-                    {
-                        newmessage.BccRecipients.Add(b);
-                    }
-                }
-
-                /// ADD MULTIPLE ATTACHMENTS
-                /// 
-                if (mm.Attachments != null)
-                {
-                    //   foreach (AppMailAttachments amt in mm.Attachments)
-                    //  {
-                    // newmessage.Attachments.AddFileAttachment(amt.Filename, amt.Data);                
-                    //  }
-                }
-
-
-
-                // Create a custom extended property and add it to the message. 
-                Guid myPropertySetId = new Guid("{20B5C09F-7CAD-44c6-BDBF-8FCBEEA08544}");
-                Guid g;
-                g = Guid.NewGuid();
-
-                ExtendedPropertyDefinition myExtendedPropertyDefinition = new ExtendedPropertyDefinition(myPropertySetId, "UUID", MapiPropertyType.String);
-                newmessage.SetExtendedProperty(myExtendedPropertyDefinition, g.ToString());
-                newmessage.IsDeliveryReceiptRequested = true;
-
-                appmail appm = db.appmails.Where(x => x.id == mm.id).FirstOrDefault();
-                appm.UID = g.ToString();
-                db.SaveChanges();
-
-                messageItems.Add(newmessage);
-            }
-
-
-
-            //// Create the batch of email messages on the server.
-            //// This method call results in an CreateItem call to EWS.
-            //ServiceResponseCollection<ServiceResponse> response = service.CreateItems(messageItems, WellKnownFolderName.Drafts, MessageDisposition.SaveOnly, null);
-
-
-
-
-            // Create and send the batch of email messages on the server.
-            // This method call results in an CreateItem call to EWS.
-            ServiceResponseCollection<ServiceResponse> response = service.CreateItems(messageItems, WellKnownFolderName.SentItems, MessageDisposition.SendAndSaveCopy, null);
-
-
-
-
-            // Instantiate a collection of item IDs to populate from the values that are returned by the Exchange server.
-            Collection<ItemId> itemIds = new Collection<ItemId>();
-
-            // Collect the item IDs from the created email messages.
-            foreach (EmailMessage message in messageItems)
-            {
                 try
                 {
 
-                    itemIds.Add(message.Id);
-                    string UUID = message.ExtendedProperties[0].Value.ToString();
+                    var mail = db.appmails.Where(x => x.id == mailID).FirstOrDefault();
+                    var appClient = db.applications.Where(x => x.id == mail.ApplicationID).FirstOrDefault();
 
 
-                    Console.WriteLine("Email message '{0}' created successfully. UID {1}.", message.Subject, UUID);
-                    appmail appm = db.appmails.Where(x => x.UID == UUID).FirstOrDefault();
-                    appm.isSent = 1;
+                    ExchangeService service = new ExchangeService(ExchangeVersion.Exchange2010_SP1);
+                    service.Credentials = new NetworkCredential(appClient.MailUsername, appClient.MailPassword, appClient.MailDomain);
+                    service.Url = new Uri(appClient.MailServiceUrl);
+
+                    Collection<EmailMessage> messageItems = new Collection<EmailMessage>();
+
+                    EmailMessage newmessage = new EmailMessage(service);
+                    newmessage.Body = mail.Content;
+                    newmessage.Subject = mail.Subject;
+                    newmessage.Body.BodyType = BodyType.HTML;
+                    newmessage.Importance = Importance.High;
+                    /// ADD MULTIPLE RECIPIENTS
+                    /// 
+                    if (mail.appmailrecipients != null)
+                    {
+                        foreach (var recipient in mail.appmailrecipients)
+                        {
+                            newmessage.ToRecipients.Add(recipient.To);
+                        }
+                    }
+
+                    /// ADD CC RECIPIENTS
+                    /// 
+                    if (mail.appmailccs != null)
+                    {
+                        foreach (var cc in mail.appmailccs)
+                        {
+                            newmessage.CcRecipients.Add(cc.To);
+                        }
+                    }
+
+
+                    /// ADD BCC RECIPIENTS
+                    /// 
+                    if (mail.appmailbccs != null)
+                    {
+                        foreach (var bcc in mail.appmailbccs)
+                        {
+                            newmessage.BccRecipients.Add(bcc.To);
+                        }
+                    }
+
+                    /// ADD MULTIPLE ATTACHMENTS
+                    /// 
+                    if (mail.appmailattachments != null)
+                    {
+                        foreach (var amt in mail.appmailattachments)
+                        {
+                            newmessage.Attachments.AddFileAttachment(amt.Filename, amt.Data);
+                        }
+                    }
+
+
+
+                    // Create a custom extended property and add it to the message. 
+                    Guid myPropertySetId = new Guid("{20B5C09F-7CAD-44c6-BDBF-8FCBEEA08544}");
+                    Guid g;
+                    g = Guid.NewGuid();
+
+                    ExtendedPropertyDefinition myExtendedPropertyDefinition = new ExtendedPropertyDefinition(myPropertySetId, "UUID", MapiPropertyType.String);
+                    newmessage.SetExtendedProperty(myExtendedPropertyDefinition, g.ToString());
+                    newmessage.IsDeliveryReceiptRequested = true;
+                    newmessage.IsReadReceiptRequested = true;
+
+                    messageItems.Add(newmessage);
+                    ServiceResponseCollection<ServiceResponse> response = service.CreateItems(messageItems, WellKnownFolderName.SentItems, MessageDisposition.SendAndSaveCopy, null);
+
+
+                    mail.UID = g.ToString();
+                    mail.isSent = 1;
+                    mail.Retries += 1;
                     db.SaveChanges();
+
+
+                    appmailjob mailjob = db.appmailjobs.Where(x => x.JobID == jobID).FirstOrDefault();
+
+                    if (mailjob != null)
+                    {   
+                        mailjob.DateLastUpdated = DateTime.Now;                    
+                        mailjob.Status = (int)JobStatus.UPDATED;
+                        db.SaveChanges();
+                    }
+
+
+                 
+
+                    if (oneTimeOnly)
+                    {
+                        RecurringJob.RemoveIfExists(jobID);
+                    }
+
+                    MailResponse mailResp = new MailResponse();
+                    mailResp.Result = "OK";
+                    mailResp.MessageID = mail.id;
+                    mailResp.MailGUID = mail.UID;
+                    mailResp.JobID = jobID;
+
+                    transaction.Commit();
+
+                    return mailResp;
+
                 }
+
                 catch (Exception ex)
                 {
 
-
-
-                    //Console.WriteLine(ex.Message);
-                    // Print out the exception and the last eight characters of the item ID.
-                    Console.WriteLine("Exception while creating message {0}: {1}", message.Id.ToString().Substring(144), ex.Message);
+                    transaction.Rollback();
+                    MailResponse mailResp = new MailResponse();
+                    mailResp.Result = "ERROR";
+                    mailResp.MessageID = -1;
+                    mailResp.ErrorMessage = ex.GetBaseException().Message;
+                    return mailResp;
                 }
-            }
-
-            // Check for success of the CreateItems method call.
-            if (response.OverallResult == ServiceResult.Success)
-            {
-                Console.WriteLine("All locally created messages were successfully saved to the Drafts folder.");
-                Console.WriteLine("\r\n");
-            }
-
-            // If the method did not return success, print the result message for each email.
-            else
-            {
-                int counter = 1;
-
-                foreach (ServiceResponse resp in response)
+                finally
                 {
-                    // Print out the result and the last eight characters of the item ID.
-                    Console.WriteLine("Result (message {0}), id {1}: {2}", counter, itemIds[counter - 1].ToString().Substring(144), resp.Result);
-                    Console.WriteLine("Error Code: {0}", resp.ErrorCode);
-                    Console.WriteLine("ErrorMessage: {0}\r\n", resp.ErrorMessage);
-                    Console.WriteLine("\r\n");
-
-                    counter++;
+                    db.Database.Connection.Close();
                 }
+
+
+
             }
 
-            //}
-            //catch (Exception ex) {
-
-            //    Exception e = ex.GetBaseException();
-            //    //throw new Exception(e.ToString());
-
-            //}
-            //finally {
-            //    db.Database.Connection.Close();
-            //}
 
 
 
 
 
 
+
+        }
+
+        /// <summary>
+        /// UPDATE SCHEDULED MAIL
+        /// </summary>
+        /// <param name="mailID"></param>
+        /// <param name="jobID"></param>
+        /// <returns></returns>
+        public MailResponse UpdateMailJob(int mailID, string jobID, DateTime newDatetime, Boolean oneTimeOnly = true, int triggerAt = 0)
+        {
+
+            mailerdaemonEntities db = new mailerdaemonEntities();
+
+            try
+            {
+
+                var mail = db.appmails.Where(x => x.id == mailID).FirstOrDefault();
+
+                if (mail == null)
+                {
+                    throw new Exception(String.Format("Mail # {0} does not exist!", mailID));
+                }
+
+                var appClient = db.applications.Where(x => x.id == mail.ApplicationID).FirstOrDefault();
+
+                appmailjob mailjob = new appmailjob();
+                mailjob = db.appmailjobs.Where(x => x.JobID == jobID).FirstOrDefault();
+                if (mailjob != null)
+                {
+                    mailjob.Status = (int)JobStatus.DELETED;
+                    db.SaveChanges();
+                }
+                else
+                {
+                    throw new Exception(String.Format("Job ID {0} does not exist!", jobID));
+                }
+
+                int dayOfMonth = newDatetime.Day;
+                int monthField = newDatetime.Month;
+
+                var recurringJobs = db.appmailjobs.Where(x => x.MailID == mailID).ToList();
+
+                foreach (var recurringJob in recurringJobs)
+                {
+
+                    recurringJob.Status = (int)JobStatus.DELETED;
+                    db.SaveChanges();
+                    RecurringJob.RemoveIfExists(recurringJob.JobID);
+                }
+
+                RecurringJob.AddOrUpdate(jobID, () => SendScheduledMail(mail.id, appClient.Description + "-" + jobID, oneTimeOnly), String.Format("0 8 {0} {1} *", dayOfMonth, monthField), TimeZoneInfo.Local);
+                for (int y = 1; y < triggerAt; y++)
+                {
+                    appmailjob mailjobRecurring = new appmailjob();
+                    mailjobRecurring.ApplicationID = appClient.id.ToString();
+                    mailjobRecurring.DateCreated = DateTime.Now;
+                    mailjobRecurring.DateLastUpdated = DateTime.Now;
+                    mailjobRecurring.Duration = 0;
+                    mailjobRecurring.JobID = jobID + "-" + y.ToString();
+                    mailjobRecurring.MailID = mail.id;
+                    mailjobRecurring.Status = (int)JobStatus.NEW;
+                    db.appmailjobs.Add(mailjobRecurring);
+                    db.SaveChanges();
+
+
+                    RecurringJob.AddOrUpdate(jobID + "-" + y.ToString(), () => SendScheduledMail(mailID, appClient.Description + "-" + jobID, oneTimeOnly), String.Format("0 8 {0} {1} *", dayOfMonth - y, monthField), TimeZoneInfo.Local);
+
+
+                }
+
+
+
+                MailResponse mailResp = new MailResponse();
+                mailResp.Result = "OK";
+                mailResp.MessageID = mail.id;
+                mailResp.MailGUID = mail.UID;
+                mailResp.JobID = jobID;
+
+                return mailResp;
+            }
+            catch (Exception ex)
+            {
+                MailResponse mailResp = new MailResponse();
+                mailResp.Result = "ERROR";
+                mailResp.MessageID = -1;
+                mailResp.ErrorMessage = ex.GetBaseException().Message;
+                return mailResp;
+            }
 
 
             return null;
         }
 
-        public MailResponse sendMail(Mails mails)
+        /// <summary>
+        /// DELETE SCHEDULED MAIL
+        /// </summary>
+        /// <param name="mailID"></param>
+        /// <param name="jobID"></param>
+        /// <returns></returns>
+        public MailResponse DeleteMailJob(int mailID, string jobID)
         {
-             mailerdaemonEntities db = new mailerdaemonEntities();
-             
-                    using (var transaction = db.Database.BeginTransaction())
-                    {
-                        try
-                        {
-                            var appClient = db.applications.Where(x => x.ApplicationGUID == mails.ApplicationGUID).FirstOrDefault();
+            mailerdaemonEntities db = new mailerdaemonEntities();
 
-                            appmail mail = new appmail();
-                            mail.ApplicationID = appClient.id;
-                            mail.Content = mails.Content;
-                            mail.DateCreated = DateTime.Now;
-                            mail.DateLastUpdated = DateTime.Now;
-                            mail.From = mails.From;
-                            mail.Subject = mails.Subject;
-
-                            db.appmails.Add(mail);
-                            db.SaveChanges();
-
-                            if (mails.To != null)
-                            {
-
-                                foreach (var z in mails.To)
-                                {
-
-
-                                    ValidatorTool.CustomValidator cv = new ValidatorTool.CustomValidator();
-
-                                    if (!cv.IsEmail(z))
-                                    {
-                                       // throw new Exception("Invalid email address: " + z);
-
-                                        Exception emEx = new Exception("EmailID :" + mail.id + Environment.NewLine + "Invalid email address (Recipient): " + z);
-
-                                        Elmah.ErrorSignal.FromCurrentContext().Raise(emEx);
-
-                                    }
-
-                                    appmailrecipient recipient = new appmailrecipient();
-                                    recipient.AppMailID = mail.id;
-                                    recipient.DateCreated = DateTime.Now;
-                                    recipient.DateLastUpdated = DateTime.Now;
-                                    recipient.To = z;
-
-                                    db.appmailrecipients.Add(recipient);
-                                    db.SaveChanges();
-                                }
-
-
-                            }
-
-                            if (mails.Cc != null)
-                            {
-
-                                foreach (var z in mails.Cc)
-                                {
-
-                                    ValidatorTool.CustomValidator cv = new ValidatorTool.CustomValidator();
-
-                                    if (!cv.IsEmail(z))
-                                    {
-                                       // throw new Exception("Invalid email address: " + z);
-                                        Exception emEx = new Exception("EmailID :" + mail.id + Environment.NewLine + "Invalid email address (CC): " + z);
-
-                                        Elmah.ErrorSignal.FromCurrentContext().Raise(emEx);
-                                    }
-
-                                    appmailcc cc = new appmailcc();
-                                    cc.AppMailID = mail.id;
-                                    cc.DateCreated = DateTime.Now;
-                                    cc.DateLastUpdated = DateTime.Now;
-                                    cc.To = z;
-
-                                    db.appmailccs.Add(cc);
-                                    db.SaveChanges();
-
-
-                                }
-
-                            }
-
-                            if (mails.Bcc != null)
-                            {
-                                foreach (var z in mails.Bcc)
-                                {
-
-                                    ValidatorTool.CustomValidator cv = new ValidatorTool.CustomValidator();
-
-                                    if (!cv.IsEmail(z))
-                                    {
-                                       // throw new Exception("Invalid email address: " + z);
-                                        Exception emEx = new Exception("EmailID :" + mail.id + Environment.NewLine + "Invalid email address (BCC): " + z);
-
-                                        Elmah.ErrorSignal.FromCurrentContext().Raise(emEx);
-                                    }
-
-                                    appmailbcc bcc = new appmailbcc();
-                                    bcc.AppMailID = mail.id;
-                                    bcc.DateCreated = DateTime.Now;
-                                    bcc.DateLastUpdated = DateTime.Now;
-                                    bcc.To = z;
-
-                                    db.appmailbccs.Add(bcc);
-                                    db.SaveChanges();
-
-
-                                }
-                            }
-
-
-
-
-
-                            List<Mails> m = new List<Mails>();
-                            m.Add(mails);
-                                                      
-
-                            ExchangeService service = new ExchangeService(ExchangeVersion.Exchange2010_SP1);
-                            service.Credentials = new NetworkCredential(appClient.MailUsername,appClient.MailPassword, appClient.MailDomain);
-                            // service.Credentials = new WebCredentials(appagent.username, appagent.password);
-                            service.Url = new Uri(appClient.MailServiceUrl);
-
-                            //https://mail.sminvestments.com/ews/Services.wsdl
-
-                            
-                            Collection<EmailMessage> messageItems = new Collection<EmailMessage>();
-
-                            foreach (Mails mm in m)
-                            {
-                                EmailMessage newmessage = new EmailMessage(service);
-                                newmessage.Body = mm.Content;
-                                newmessage.Subject = mm.Subject;
-                                newmessage.Body.BodyType = BodyType.HTML;
-                                newmessage.Importance = Importance.High;
-                                /// ADD MULTIPLE RECIPIENTS
-                                /// 
-                                if (mm.To != null)
-                                {
-                                    foreach (string r in mm.To)
-                                    {
-                                        newmessage.ToRecipients.Add(r);
-                                    }
-                                }
-
-                                /// ADD CC RECIPIENTS
-                                /// 
-                                if (mm.Cc != null)
-                                {
-                                    foreach (string c in mm.Cc)
-                                    {
-                                        newmessage.CcRecipients.Add(c);
-                                    }
-                                }
-
-
-                                /// ADD BCC RECIPIENTS
-                                /// 
-                                if (mm.Bcc != null)
-                                {
-                                    foreach (string b in mm.Bcc)
-                                    {
-                                        newmessage.BccRecipients.Add(b);
-                                    }
-                                }
-
-                                /// ADD MULTIPLE ATTACHMENTS
-                                /// 
-                                if (mm.Attachments != null)
-                                {
-                                    foreach (MailAttachment amt in mm.Attachments)
-                                    {
-                                        newmessage.Attachments.AddFileAttachment(amt.Filename, amt.Data);
-                                    }
-                                }
-
-
-
-                                // Create a custom extended property and add it to the message. 
-                                Guid myPropertySetId = new Guid("{20B5C09F-7CAD-44c6-BDBF-8FCBEEA08544}");
-                                Guid g;
-                                g = Guid.NewGuid();
-
-                                ExtendedPropertyDefinition myExtendedPropertyDefinition = new ExtendedPropertyDefinition(myPropertySetId, "UUID", MapiPropertyType.String);
-                                newmessage.SetExtendedProperty(myExtendedPropertyDefinition, g.ToString());
-                                newmessage.IsDeliveryReceiptRequested = true;
-
-                               
-                                mail.UID = g.ToString();
-                                mail.isSent = 1;
-                                db.SaveChanges();
-
-                                messageItems.Add(newmessage);
-                            }
-                            ServiceResponseCollection<ServiceResponse> response = service.CreateItems(messageItems, WellKnownFolderName.SentItems, MessageDisposition.SendAndSaveCopy, null);
-
-
-
-
-                            transaction.Commit();
-
-
-                           
-
-                            MailResponse mailResp = new MailResponse();
-                            mailResp.Result = "OK";
-                            mailResp.MessageID = mails.id;
-                            mailResp.ErrorMessage = "";
-
-                            return mailResp;
-
-
-                        }
-                        catch (Exception ex1)
-                        {
-                            transaction.Rollback();
-
-                            MailResponse mailResp = new MailResponse();
-                            mailResp.Result = "ERROR";
-                            mailResp.MessageID = -1;
-                            mailResp.ErrorMessage = ex1.GetBaseException().Message;
-                            return mailResp;
-                           // throw new Exception(ex1.Message);
-                        }
-                        finally
-                        {
-                            db.Database.Connection.Close();
-                        }
-                    }
-        }
-
-        public  void sendMailWithoutAttachment(List<Mails> m) { }
-
-        public  void sendMailWithAttachment(List<Mails> m) { }
-
-        private  bool CertificateValidationCallBack(object sender, System.Security.Cryptography.X509Certificates.X509Certificate certificate, System.Security.Cryptography.X509Certificates.X509Chain chain, System.Net.Security.SslPolicyErrors sslPolicyErrors)
-        {
-            // If the certificate is a valid, signed certificate, return true.
-            if (sslPolicyErrors == System.Net.Security.SslPolicyErrors.None)
+            try
             {
-                return true;
-            }
 
-            // If there are errors in the certificate chain, look at each error to determine the cause.
-            if ((sslPolicyErrors & System.Net.Security.SslPolicyErrors.RemoteCertificateChainErrors) != 0)
-            {
-                if (chain != null && chain.ChainStatus != null)
+                var mail = db.appmails.Where(x => x.id == mailID).FirstOrDefault();
+
+                if (mail == null)
                 {
-                    foreach (System.Security.Cryptography.X509Certificates.X509ChainStatus status in chain.ChainStatus)
-                    {
-                        if ((certificate.Subject == certificate.Issuer) &&
-                           (status.Status == System.Security.Cryptography.X509Certificates.X509ChainStatusFlags.UntrustedRoot))
-                        {
-                            // Self-signed certificates with an untrusted root are valid. 
-                            continue;
-                        }
-                        else
-                        {
-                            if (status.Status != System.Security.Cryptography.X509Certificates.X509ChainStatusFlags.NoError)
-                            {
-                                // If there are any other errors in the certificate chain, the certificate is invalid,
-                                // so the method returns false.
-                                return false;
-                            }
-                        }
-                    }
+                    throw new Exception(String.Format("Mail # {0} does not exist!", mailID));
                 }
 
-                // When processing reaches this line, the only errors in the certificate chain are 
-                // untrusted root errors for self-signed certificates. These certificates are valid
-                // for default Exchange server installations, so return true.
-                return true;
+
+                var appClient = db.applications.Where(x => x.id == mail.ApplicationID).FirstOrDefault();
+
+                RecurringJob.RemoveIfExists(jobID);
+
+                appmailjob mailjob = db.appmailjobs.Where(x => x.JobID == jobID).FirstOrDefault();
+                if (mailjob != null)
+                {
+
+                    mailjob.Status = (int)JobStatus.DELETED;
+                    db.SaveChanges();
+
+                    var recurringJobs = db.appmailjobs.Where(x => x.MailID == mailID).ToList();
+
+                    foreach (var recurringJob in recurringJobs)
+                    {
+                        RecurringJob.RemoveIfExists(recurringJob.JobID);
+                    }
+
+
+                }
+                else
+                {
+                    throw new Exception(String.Format("Job ID {0} does not exist!", jobID));
+                }
+
+                MailResponse mailResp = new MailResponse();
+                mailResp.Result = "OK";
+                mailResp.MessageID = mail.id;
+                mailResp.MailGUID = mail.UID;
+                mailResp.JobID = jobID;
+
+                return mailResp;
+
+
             }
-            else
+            catch (Exception ex)
             {
-                // In all other cases, return false.
-                return false;
+                MailResponse mailResp = new MailResponse();
+                mailResp.Result = "ERROR";
+                mailResp.MessageID = -1;
+                mailResp.ErrorMessage = ex.GetBaseException().Message;
+                return mailResp;
             }
+
+
+
         }
 
-        private  bool RedirectionUrlValidationCallback(string redirectionUrl)
+        public MailResponse SendMail(Mails mails)
         {
-            // The default for the validation callback is to reject the URL.
-            bool result = false;
+            mailerdaemonEntities db = new mailerdaemonEntities();
 
-            Uri redirectionUri = new Uri(redirectionUrl);
-
-            // Validate the contents of the redirection URL. In this simple validation
-            // callback, the redirection URL is considered valid if it is using HTTPS
-            // to encrypt the authentication credentials. 
-            if (redirectionUri.Scheme == "https")
+            using (var transaction = db.Database.BeginTransaction())
             {
-                result = true;
+                try
+                {
+                    var appClient = db.applications.Where(x => x.ApplicationGUID == mails.ApplicationGUID).FirstOrDefault();
+
+                    appmail mail = new appmail();
+                    mail.ApplicationID = appClient.id;
+                    mail.Content = mails.Content;
+                    mail.DateCreated = DateTime.Now;
+                    mail.DateLastUpdated = DateTime.Now;
+                    mail.From = mails.From;
+                    mail.Subject = mails.Subject;
+
+                    db.appmails.Add(mail);
+                    db.SaveChanges();
+
+                    if (mails.To != null)
+                    {
+                        foreach (var z in mails.To)
+                        {
+                            ValidatorTool.CustomValidator cv = new ValidatorTool.CustomValidator();
+                            if (!cv.IsEmail(z))
+                            {
+
+
+                                Exception emEx = new Exception("EmailID :" + mail.id + Environment.NewLine + "Invalid email address (Recipient): " + z);
+
+                                Elmah.ErrorSignal.FromCurrentContext().Raise(emEx);
+                                throw new Exception("Invalid email address: " + z);
+
+                            }
+
+                            appmailrecipient recipient = new appmailrecipient();
+                            recipient.AppMailID = mail.id;
+                            recipient.DateCreated = DateTime.Now;
+                            recipient.DateLastUpdated = DateTime.Now;
+                            recipient.To = z;
+
+                            db.appmailrecipients.Add(recipient);
+                            db.SaveChanges();
+                        }
+
+
+                    }
+
+                    if (mails.Cc != null)
+                    {
+
+                        foreach (var z in mails.Cc)
+                        {
+
+                            ValidatorTool.CustomValidator cv = new ValidatorTool.CustomValidator();
+
+                            if (!cv.IsEmail(z))
+                            {
+
+                                Exception emEx = new Exception("EmailID :" + mail.id + Environment.NewLine + "Invalid email address (CC): " + z);
+
+                                Elmah.ErrorSignal.FromCurrentContext().Raise(emEx);
+                                throw new Exception("Invalid email address: " + z);
+                            }
+
+                            appmailcc cc = new appmailcc();
+                            cc.AppMailID = mail.id;
+                            cc.DateCreated = DateTime.Now;
+                            cc.DateLastUpdated = DateTime.Now;
+                            cc.To = z;
+
+                            db.appmailccs.Add(cc);
+                            db.SaveChanges();
+
+
+                        }
+
+                    }
+
+                    if (mails.Bcc != null)
+                    {
+                        foreach (var z in mails.Bcc)
+                        {
+
+                            ValidatorTool.CustomValidator cv = new ValidatorTool.CustomValidator();
+
+                            if (!cv.IsEmail(z))
+                            {
+
+                                Exception emEx = new Exception("EmailID :" + mail.id + Environment.NewLine + "Invalid email address (BCC): " + z);
+
+                                Elmah.ErrorSignal.FromCurrentContext().Raise(emEx);
+                                throw new Exception("Invalid email address: " + z);
+                            }
+
+                            appmailbcc bcc = new appmailbcc();
+                            bcc.AppMailID = mail.id;
+                            bcc.DateCreated = DateTime.Now;
+                            bcc.DateLastUpdated = DateTime.Now;
+                            bcc.To = z;
+
+                            db.appmailbccs.Add(bcc);
+                            db.SaveChanges();
+
+
+                        }
+                    }
+
+
+
+
+
+                    List<Mails> m = new List<Mails>();
+                    m.Add(mails);
+
+
+                    ExchangeService service = new ExchangeService(ExchangeVersion.Exchange2010_SP1);
+                    service.Credentials = new NetworkCredential(appClient.MailUsername, appClient.MailPassword, appClient.MailDomain);
+                    // service.Credentials = new WebCredentials(appagent.username, appagent.password);
+                    service.Url = new Uri(appClient.MailServiceUrl);
+
+
+
+
+                    Collection<EmailMessage> messageItems = new Collection<EmailMessage>();
+
+                    foreach (Mails mm in m)
+                    {
+                        EmailMessage newmessage = new EmailMessage(service);
+                        newmessage.Body = mm.Content;
+                        newmessage.Subject = mm.Subject;
+                        newmessage.Body.BodyType = BodyType.HTML;
+                        newmessage.Importance = Importance.High;
+                        /// ADD MULTIPLE RECIPIENTS
+                        /// 
+                        if (mm.To != null)
+                        {
+                            foreach (string r in mm.To)
+                            {
+                                newmessage.ToRecipients.Add(r);
+                            }
+                        }
+
+                        /// ADD CC RECIPIENTS
+                        /// 
+                        if (mm.Cc != null)
+                        {
+                            foreach (string c in mm.Cc)
+                            {
+                                newmessage.CcRecipients.Add(c);
+                            }
+                        }
+
+
+                        /// ADD BCC RECIPIENTS
+                        /// 
+                        if (mm.Bcc != null)
+                        {
+                            foreach (string b in mm.Bcc)
+                            {
+                                newmessage.BccRecipients.Add(b);
+                            }
+                        }
+
+                        /// ADD MULTIPLE ATTACHMENTS
+                        /// 
+                        if (mm.Attachments != null)
+                        {
+                            foreach (MailAttachment amt in mm.Attachments)
+                            {
+                                newmessage.Attachments.AddFileAttachment(amt.Filename, amt.Data);
+                            }
+                        }
+
+
+
+                        // Create a custom extended property and add it to the message. 
+                        Guid myPropertySetId = new Guid("{20B5C09F-7CAD-44c6-BDBF-8FCBEEA08544}");
+                        Guid g;
+                        g = Guid.NewGuid();
+
+                        ExtendedPropertyDefinition myExtendedPropertyDefinition = new ExtendedPropertyDefinition(myPropertySetId, "UUID", MapiPropertyType.String);
+                        newmessage.SetExtendedProperty(myExtendedPropertyDefinition, g.ToString());
+                        newmessage.IsDeliveryReceiptRequested = true;
+                        newmessage.IsReadReceiptRequested = true;
+
+
+                        mail.UID = g.ToString();
+                        mail.isSent = 1;
+                        db.SaveChanges();
+
+                        messageItems.Add(newmessage);
+                    }
+                    ServiceResponseCollection<ServiceResponse> response = service.CreateItems(messageItems, WellKnownFolderName.SentItems, MessageDisposition.SendAndSaveCopy, null);
+
+
+
+
+                    transaction.Commit();
+
+
+
+
+                    MailResponse mailResp = new MailResponse();
+                    mailResp.Result = "OK";
+                    mailResp.MessageID = mail.id;
+                    mailResp.MailGUID = mail.UID;
+                    mailResp.ErrorMessage = "";
+
+                    return mailResp;
+
+
+                }
+                catch (Exception ex1)
+                {
+                    transaction.Rollback();
+
+                    MailResponse mailResp = new MailResponse();
+                    mailResp.Result = "ERROR";
+                    mailResp.MessageID = -1;
+                    mailResp.ErrorMessage = ex1.GetBaseException().Message;
+                    return mailResp;
+                    // throw new Exception(ex1.Message);
+                }
+                finally
+                {
+                    db.Database.Connection.Close();
+                }
             }
-            return result;
         }
 
+        public MailResponse SendLater(Mails mails, DateTime datetime, Boolean oneTimeOnly = true, int triggerAt = 0)
+        {
+
+
+            mailerdaemonEntities db = new mailerdaemonEntities();
+            MailResponse mailResp = new MailResponse();
+            int mailID = -1;
+            int dayOfMonth = 0;
+            int monthField = 0;
+
+            Guid g = Guid.NewGuid();
+            string jobID = g.ToString();
+
+            var appClient = db.applications.Where(x => x.ApplicationGUID == mails.ApplicationGUID).FirstOrDefault();
+
+
+
+            using (var transaction = db.Database.BeginTransaction())
+            {
+                try
+                {
+
+                    if (appClient == null)
+                    {
+                        throw new Exception("Application client does not exist!");
+                    }
+
+                    appmail mail = new appmail();
+                    mail.ApplicationID = appClient.id;
+                    mail.Content = mails.Content;
+                    mail.DateCreated = DateTime.Now;
+                    mail.DateLastUpdated = DateTime.Now;
+                    mail.From = mails.From;
+                    mail.Subject = mails.Subject;
+
+                    db.appmails.Add(mail);
+                    db.SaveChanges();
+
+                    if (mails.To != null)
+                    {
+                        foreach (var z in mails.To)
+                        {
+                            ValidatorTool.CustomValidator cv = new ValidatorTool.CustomValidator();
+
+                            if (!cv.IsEmail(z))
+                            {
+
+
+                                Exception emEx = new Exception("EmailID :" + mail.id + Environment.NewLine + "Invalid email address (Recipient): " + z);
+
+                                Elmah.ErrorSignal.FromCurrentContext().Raise(emEx);
+                                throw new Exception("Invalid email address: " + z);
+
+                            }
+
+                            appmailrecipient recipient = new appmailrecipient();
+                            recipient.AppMailID = mail.id;
+                            recipient.DateCreated = DateTime.Now;
+                            recipient.DateLastUpdated = DateTime.Now;
+                            recipient.To = z;
+
+                            db.appmailrecipients.Add(recipient);
+                            db.SaveChanges();
+                        }
+
+
+                    }
+
+                    if (mails.Cc != null)
+                    {
+                        foreach (var z in mails.Cc)
+                        {
+                            ValidatorTool.CustomValidator cv = new ValidatorTool.CustomValidator();
+                            if (!cv.IsEmail(z))
+                            {
+
+                                Exception emEx = new Exception("EmailID :" + mail.id + Environment.NewLine + "Invalid email address (CC): " + z);
+
+                                Elmah.ErrorSignal.FromCurrentContext().Raise(emEx);
+                                throw new Exception("Invalid email address: " + z);
+                            }
+
+                            appmailcc cc = new appmailcc();
+                            cc.AppMailID = mail.id;
+                            cc.DateCreated = DateTime.Now;
+                            cc.DateLastUpdated = DateTime.Now;
+                            cc.To = z;
+
+                            db.appmailccs.Add(cc);
+                            db.SaveChanges();
+
+                        }
+                    }
+
+                    if (mails.Bcc != null)
+                    {
+                        foreach (var z in mails.Bcc)
+                        {
+                            ValidatorTool.CustomValidator cv = new ValidatorTool.CustomValidator();
+
+                            if (!cv.IsEmail(z))
+                            {
+
+                                Exception emEx = new Exception("EmailID :" + mail.id + Environment.NewLine + "Invalid email address (BCC): " + z);
+
+                                Elmah.ErrorSignal.FromCurrentContext().Raise(emEx);
+                                throw new Exception("Invalid email address: " + z);
+                            }
+
+                            appmailbcc bcc = new appmailbcc();
+                            bcc.AppMailID = mail.id;
+                            bcc.DateCreated = DateTime.Now;
+                            bcc.DateLastUpdated = DateTime.Now;
+                            bcc.To = z;
+
+                            db.appmailbccs.Add(bcc);
+                            db.SaveChanges();
+
+
+                        }
+                    }
+
+
+                    string jobUniqueID = appClient.Description + "-" + jobID;
+
+
+                    mailResp.Result = "OK";
+                    mailResp.MessageID = mail.id;
+                    mailResp.MailGUID = "";
+                    mailResp.ErrorMessage = "";
+                    mailResp.JobID = jobUniqueID;
+
+                    mailID = mail.id;
+
+
+
+                    appmailjob mailjob = new appmailjob();
+                    mailjob.ApplicationID = appClient.id.ToString();
+                    mailjob.DateCreated = DateTime.Now;
+                    mailjob.DateLastUpdated = DateTime.Now;
+                    mailjob.Duration = 0;
+                    mailjob.JobID = jobUniqueID;
+                    mailjob.MailID = mail.id;
+                    mailjob.Status = (int)JobStatus.NEW;
+                    db.appmailjobs.Add(mailjob);
+                    db.SaveChanges();
+
+                    for (int y = 1; y <= triggerAt; y++)
+                    {
+
+                        appmailjob mailjobRecurring = new appmailjob();
+                        mailjobRecurring.ApplicationID = appClient.id.ToString();
+                        mailjobRecurring.DateCreated = DateTime.Now;
+                        mailjobRecurring.DateLastUpdated = DateTime.Now;
+                        mailjobRecurring.Duration = 0;
+                        mailjobRecurring.JobID = jobUniqueID + "-" + y.ToString();
+                        mailjobRecurring.MailID = mail.id;
+                        mailjobRecurring.Status = (int)JobStatus.NEW;
+                        db.appmailjobs.Add(mailjobRecurring);
+                        db.SaveChanges();
+
+
+                    }
+
+                    transaction.Commit();
+
+
+                    dayOfMonth = datetime.Day;
+                    monthField = datetime.Month;
+
+                    RecurringJob.AddOrUpdate(jobUniqueID, () => SendScheduledMail(mailID, appClient.Description + "-" + jobID, oneTimeOnly), String.Format("0 8 {0} {1} *", dayOfMonth, monthField), TimeZoneInfo.Local);
+                    for (int y = 1; y <= triggerAt; y++)
+                    {
+
+                        RecurringJob.AddOrUpdate(jobUniqueID + "-" + y.ToString(), () => SendScheduledMail(mailID, appClient.Description + "-" + jobID, oneTimeOnly), String.Format("0 8 {0} {1} *", dayOfMonth - y, monthField), TimeZoneInfo.Local);
+                        
+                    }
+
+
+
+
+
+
+
+                }
+                catch (Exception ex1)
+                {
+                    transaction.Rollback();
+
+
+                    mailResp.Result = "ERROR";
+                    mailResp.MessageID = -1;
+                    mailResp.ErrorMessage = ex1.GetBaseException().Message;
+
+                    // throw new Exception(ex1.Message);
+                }
+                finally
+                {
+                    db.Database.Connection.Close();
+                }
+
+
+            }
+
+
+
+            return mailResp;
+
+        }
+
+       
 
     }
 
-    public class MailStatus
-    {
-
-        public string status { get; set; }
-        public string message { get; set; }
-
-    }
 
 
 

@@ -18,7 +18,7 @@
     <UseIISExpress>true</UseIISExpress>
     <IISExpressSSLPort />
     <IISExpressAnonymousAuthentication>disabled</IISExpressAnonymousAuthentication>
-    <IISExpressWindowsAuthentication>enabled</IISExpressWindowsAuthentication>
+    <IISExpressWindowsAuthentication>disabled</IISExpressWindowsAuthentication>
     <IISExpressUseClassicPipelineMode />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -129,12 +129,6 @@
     <Compile Include="Models\appmail.cs">
       <DependentUpon>MailerDaemon.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\appmailagent.cs">
-      <DependentUpon>MailerDaemon.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\appmailagentassignment.cs">
-      <DependentUpon>MailerDaemon.tt</DependentUpon>
-    </Compile>
     <Compile Include="Models\appmailattachment.cs">
       <DependentUpon>MailerDaemon.tt</DependentUpon>
     </Compile>
@@ -148,6 +142,30 @@
       <DependentUpon>MailerDaemon.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\appmailrecipient.cs">
+      <DependentUpon>MailerDaemon.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\counter.cs">
+      <DependentUpon>MailerDaemon.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\distributedlock.cs">
+      <DependentUpon>MailerDaemon.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\hash.cs">
+      <DependentUpon>MailerDaemon.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\job.cs">
+      <DependentUpon>MailerDaemon.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\jobparameter.cs">
+      <DependentUpon>MailerDaemon.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\jobqueue.cs">
+      <DependentUpon>MailerDaemon.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\jobstate.cs">
+      <DependentUpon>MailerDaemon.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\list.cs">
       <DependentUpon>MailerDaemon.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\MailerDaemon.Context.cs">
@@ -164,6 +182,18 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>MailerDaemon.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="Models\role.cs">
+      <DependentUpon>MailerDaemon.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\server.cs">
+      <DependentUpon>MailerDaemon.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\set.cs">
+      <DependentUpon>MailerDaemon.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\user.cs">
+      <DependentUpon>MailerDaemon.tt</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

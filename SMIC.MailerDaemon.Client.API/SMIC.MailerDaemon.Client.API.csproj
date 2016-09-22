@@ -38,13 +38,13 @@
       <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="MySql.Data, Version=6.9.8.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\MailerAPI\bin\MySql.Data.dll</HintPath>
+    <Reference Include="MySql.Data, Version=6.9.9.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL">
+      <HintPath>..\packages\MySql.Data.6.9.9\lib\net45\MySql.Data.dll</HintPath>
+      <Private>True</Private>
     </Reference>
-    <Reference Include="MySql.Data.Entity.EF6, Version=6.9.8.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\MailerAPI\bin\MySql.Data.Entity.EF6.dll</HintPath>
+    <Reference Include="MySql.Data.Entity.EF6, Version=6.9.9.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL">
+      <HintPath>..\packages\MySql.Data.Entity.6.9.9\lib\net45\MySql.Data.Entity.EF6.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=8.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.8.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
@@ -66,25 +66,64 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="application.cs">
-      <DependentUpon>MailerModel.tt</DependentUpon>
+      <DependentUpon>BackgroundMailerModel.tt</DependentUpon>
     </Compile>
     <Compile Include="appmail.cs">
-      <DependentUpon>MailerModel.tt</DependentUpon>
+      <DependentUpon>BackgroundMailerModel.tt</DependentUpon>
     </Compile>
     <Compile Include="appmailattachment.cs">
-      <DependentUpon>MailerModel.tt</DependentUpon>
+      <DependentUpon>BackgroundMailerModel.tt</DependentUpon>
     </Compile>
     <Compile Include="appmailbcc.cs">
-      <DependentUpon>MailerModel.tt</DependentUpon>
+      <DependentUpon>BackgroundMailerModel.tt</DependentUpon>
     </Compile>
     <Compile Include="appmailcc.cs">
-      <DependentUpon>MailerModel.tt</DependentUpon>
+      <DependentUpon>BackgroundMailerModel.tt</DependentUpon>
     </Compile>
     <Compile Include="appmailjob.cs">
-      <DependentUpon>MailerModel.tt</DependentUpon>
+      <DependentUpon>BackgroundMailerModel.tt</DependentUpon>
     </Compile>
     <Compile Include="appmailrecipient.cs">
-      <DependentUpon>MailerModel.tt</DependentUpon>
+      <DependentUpon>BackgroundMailerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="BackgroundMailerModel.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>BackgroundMailerModel.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="BackgroundMailerModel.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>BackgroundMailerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="BackgroundMailerModel.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>BackgroundMailerModel.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="counter.cs">
+      <DependentUpon>BackgroundMailerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="distributedlock.cs">
+      <DependentUpon>BackgroundMailerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="hash.cs">
+      <DependentUpon>BackgroundMailerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="job.cs">
+      <DependentUpon>BackgroundMailerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="jobparameter.cs">
+      <DependentUpon>BackgroundMailerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="jobqueue.cs">
+      <DependentUpon>BackgroundMailerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="jobstate.cs">
+      <DependentUpon>BackgroundMailerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="list.cs">
+      <DependentUpon>BackgroundMailerModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Mailer.cs" />
     <Compile Include="MailerModel.Context.cs">
@@ -105,10 +144,16 @@
     <Compile Include="Mails.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="role.cs">
-      <DependentUpon>MailerModel.tt</DependentUpon>
+      <DependentUpon>BackgroundMailerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="server.cs">
+      <DependentUpon>BackgroundMailerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="set.cs">
+      <DependentUpon>BackgroundMailerModel.tt</DependentUpon>
     </Compile>
     <Compile Include="user.cs">
-      <DependentUpon>MailerModel.tt</DependentUpon>
+      <DependentUpon>BackgroundMailerModel.tt</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
@@ -119,12 +164,29 @@
     <None Include="App.Config">
       <SubType>Designer</SubType>
     </None>
+    <EntityDeploy Include="BackgroundMailerModel.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>BackgroundMailerModel.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <None Include="BackgroundMailerModel.edmx.diagram">
+      <DependentUpon>BackgroundMailerModel.edmx</DependentUpon>
+    </None>
     <None Include="MailerModel.edmx.diagram">
       <DependentUpon>MailerModel.edmx</DependentUpon>
     </None>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="BackgroundMailerModel.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>BackgroundMailerModel.edmx</DependentUpon>
+      <LastGenOutput>BackgroundMailerModel.Context.cs</LastGenOutput>
+    </Content>
+    <Content Include="BackgroundMailerModel.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>BackgroundMailerModel.edmx</DependentUpon>
+      <LastGenOutput>BackgroundMailerModel.cs</LastGenOutput>
+    </Content>
     <Content Include="MailerModel.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <DependentUpon>MailerModel.edmx</DependentUpon>

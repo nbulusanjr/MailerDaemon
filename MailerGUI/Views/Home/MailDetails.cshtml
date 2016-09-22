@@ -2,8 +2,8 @@
 @{
     ViewBag.Title = "MailDetails";
     MailerGUI.Models.appmail mail = ViewBag.mail;
-    List<MailerGUI.Models.appmailcc> mailcc = ViewBag.mailcc;
-    List<MailerGUI.Models.appmailattachment> mailattachment = ViewBag.mailattachment;
+
+    
 }
 
 <h2>MailDetails</h2>
@@ -16,13 +16,40 @@
     </tr>
     <tr>
         <td>Recipient:</td>
-        <td></td>
+        <td>
+            @{
+                var recipients = mail.appmailrecipients.ToList();
+
+                foreach (var recipient in recipients)
+                {
+                    WriteLiteral(recipient.To + "; ");
+                }
+               
+            }
+
+        </td>
     </tr>
     <tr>
         <td>CC:</td>
         <td>
-            @{
-                foreach (var y in mailcc)
+          
+
+
+                @{
+                    foreach (var y in mail.appmailccs)
+                    {
+                        WriteLiteral(y.To + ";<br/>");
+                    }
+                }
+           
+        </td>
+    </tr>
+    <tr>
+        <td>BCC:</td>
+        <td>
+
+             @{
+                foreach (var y in mail.appmailbccs)
                 {
                     WriteLiteral(y.To + ";");
                 }
@@ -31,14 +58,10 @@
         </td>
     </tr>
     <tr>
-        <td>BCC:</td>
-        <td></td>
-    </tr>
-    <tr>
         <td>Attachments:</td>
         <td>
             @{
-                foreach (var y in mailattachment)
+                foreach (var y in mail.appmailattachments)
                 {
                     WriteLiteral(y.Filename + ";");
                 }

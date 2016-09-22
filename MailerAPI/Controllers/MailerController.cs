@@ -178,8 +178,7 @@ namespace MailerAPI.Controllers
                             // service.Credentials = new WebCredentials(appagent.username, appagent.password);
                             service.Url = new Uri(appClient.MailServiceUrl);
 
-                            //https://mail.sminvestments.com/ews/Services.wsdl
-
+                           
                             
                             Collection<EmailMessage> messageItems = new Collection<EmailMessage>();
 

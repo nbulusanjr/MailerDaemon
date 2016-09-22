@@ -14,6 +14,14 @@ namespace MailerGUI.Models
     
     public partial class appmail
     {
+        public appmail()
+        {
+            this.appmailattachments = new HashSet<appmailattachment>();
+            this.appmailbccs = new HashSet<appmailbcc>();
+            this.appmailccs = new HashSet<appmailcc>();
+            this.appmailrecipients = new HashSet<appmailrecipient>();
+        }
+    
         public int id { get; set; }
         public int ApplicationID { get; set; }
         public string From { get; set; }
@@ -24,5 +32,10 @@ namespace MailerGUI.Models
         public System.DateTime DateCreated { get; set; }
         public System.DateTime DateLastUpdated { get; set; }
         public string UID { get; set; }
+    
+        public virtual ICollection<appmailattachment> appmailattachments { get; set; }
+        public virtual ICollection<appmailbcc> appmailbccs { get; set; }
+        public virtual ICollection<appmailcc> appmailccs { get; set; }
+        public virtual ICollection<appmailrecipient> appmailrecipients { get; set; }
     }
 }

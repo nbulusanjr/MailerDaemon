@@ -26,13 +26,23 @@ namespace MailerGUI.Models
         }
     
         public DbSet<application> applications { get; set; }
-        public DbSet<appmailagentassignment> appmailagentassignments { get; set; }
-        public DbSet<appmailagent> appmailagents { get; set; }
         public DbSet<appmailattachment> appmailattachments { get; set; }
         public DbSet<appmailbcc> appmailbccs { get; set; }
         public DbSet<appmailcc> appmailccs { get; set; }
         public DbSet<appmailjob> appmailjobs { get; set; }
         public DbSet<appmailrecipient> appmailrecipients { get; set; }
         public DbSet<appmail> appmails { get; set; }
+        public DbSet<counter> counters { get; set; }
+        public DbSet<distributedlock> distributedlocks { get; set; }
+        public DbSet<hash> hashes { get; set; }
+        public DbSet<job> jobs { get; set; }
+        public DbSet<jobparameter> jobparameters { get; set; }
+        public DbSet<jobqueue> jobqueues { get; set; }
+        public DbSet<jobstate> jobstates { get; set; }
+        public DbSet<list> lists { get; set; }
+        public DbSet<role> roles { get; set; }
+        public DbSet<server> servers { get; set; }
+        public DbSet<set> sets { get; set; }
+        public DbSet<user> users { get; set; }
     }
 }

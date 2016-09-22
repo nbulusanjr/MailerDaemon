@@ -31,7 +31,7 @@ namespace MailerGUI.Controllers
         public ActionResult MailList()
         {
             MailerDaemonEntities1 db = new MailerDaemonEntities1();
-            return View(db.appmails.ToList());
+            return View(db.appmails.Take(100).ToList());
         }
 
         public ActionResult MailDetails(int id)
@@ -40,16 +40,11 @@ namespace MailerGUI.Controllers
             MailerDaemonEntities1 db=new MailerDaemonEntities1();
 
             var mail = db.appmails.Where(x => x.id == id).FirstOrDefault();
-            var mailcc = db.appmailccs.Where(x => x.AppMailID == id).ToList();
-            var mailbcc = db.appmailbccs.Where(x => x.AppMailID == id).ToList();
-            var mailattacchment = db.appmailattachments.Where(x => x.AppMailID == id).ToList();
+         
 
 
             ViewBag.mail = mail;
-            ViewBag.mailcc = mailcc;
-            ViewBag.mailbcc = mailbcc;
-            ViewBag.mailattachment = mailattacchment;
-
+          
            
 
             return View();

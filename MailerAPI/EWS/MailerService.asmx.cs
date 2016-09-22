@@ -25,10 +25,40 @@ namespace MailerAPI.EWS
         [WebMethod]
         public MailResponse Send(Mails mails)
         {
-            return null;
+            ExchangeMailer excMailer = new ExchangeMailer();
+            return excMailer.SendMail(mails);
+
         }
 
-       
+        [WebMethod]
+        public MailResponse SendLater(Mails mails, DateTime datetime,bool oneTimeOnly=true,int triggerAt=0)
+        {
+            ExchangeMailer excMailer = new ExchangeMailer();
+
+            return excMailer.SendLater(mails, datetime,oneTimeOnly,triggerAt);
+        }
+
+
+        [WebMethod]
+        public MailResponse UpdateMailJob(int mailID, string jobID, DateTime datetime, Boolean oneTimeOnly = true,int triggerAt=0)
+        {
+            ExchangeMailer excMailer = new ExchangeMailer();
+
+
+
+            return excMailer.UpdateMailJob(mailID, jobID, datetime, oneTimeOnly,triggerAt);
+        }
+
+        [WebMethod]
+        public MailResponse DeleteMailJob(int mailID, string jobID)
+        {
+            ExchangeMailer excMailer = new ExchangeMailer();
+
+            return excMailer.DeleteMailJob(mailID, jobID);
+        }
+
+
+
 
     }
 }
